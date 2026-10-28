@@ -31,3 +31,12 @@ Para ocultar: `UPDATE feedback SET visible=0 WHERE id=1`. Para excluir: `DELETE 
 - A validação de origem CORS **não é autenticação**. Um script ou HTTP client pode enviar requisições sem cabeçalho `Origin`. Configure limite de requisições no painel Cloudflare (WAF/rate limiting) e proteção anti-bot/Turnstile se o site ganhar tráfego público.
 - O `GET /api/data` retorna um JSON global agregado. Ele **não é um arquivo físico `data.json` atualizado no repo**. O D1 é o armazenamento persistente, e a API é a camada JSON.
 - Os nomes e comentários publicados ficam visíveis a visitantes. Informe aos estudantes antes de coletá-los e ofereça solicitação de remoção dos dados.
+
+
+## V5 — wallet e ranking
+
+Após configurar D1 e fazer backup, execute `npx wrangler d1 execute plp-estudos --remote --file=wallet-migration.sql` para adicionar apenas tabelas de carteira (não apaga as da V4). Em instalações novas use o `schema.sql` completo. Faça `npx wrangler deploy`.
+
+Rotas: `POST /api/wallet/register`, `POST /api/wallet/login`, `GET /api/wallet/me`, `GET /api/wallet/ranking`, `POST /api/wallet/challenge`, `POST /api/wallet/answer`. Token Bearer é retornado após criar conta/login. Nunca inclua tokens ou senhas em `config.json`. A resposta é aceita uma única vez e o servidor credita 5 moedas por acerto. Ranking público contém somente nome e coins.
+
+Considere adicionar Turnstile/rate limits e políticas de privacidade/remover conta antes de divulgar amplamente. Os saldos da wallet não são uma moeda de valor real e não têm propósito financeiro.

@@ -1,3 +1,4 @@
+import {walletRoute} from './wallet.js';
 /** Cloudflare Worker + D1; public, no secret in client. Scores and public feedback only. */
 const headers=(origin,allowed)=>({'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
 const json=(value,status,origin,allowed)=>new Response(JSON.stringify(value),{status,headers:headers(origin,allowed)});
@@ -9,6 +10,8 @@ export default {async fetch(req,env){
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers:headers(origin,cors)});
  if(origin&&!allowedOrigins.includes(origin))return json({error:'Origem não permitida'},403,origin,cors);
  const path=new URL(req.url).pathname;
+ const handled=await walletRoute(req,env,path,(value,status)=>json(value,status,origin,cors));
+ if(handled)return handled;
  if(path==='/api/health'&&req.method==='GET')return json({ok:true},200,origin,cors);
  if(path==='/api/data'&&req.method==='GET'){
   const [scores,feedback,stats]=await Promise.all([
