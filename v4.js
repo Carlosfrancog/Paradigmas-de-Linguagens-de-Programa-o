@@ -10,10 +10,29 @@ const assignDifficulty=x=>{const t=x.q.toLowerCase();if(/qual é|o que é|define
 window.plpQuizPool=bank=>{let pool=bank.filter(x=>level==='mix'||assignDifficulty(x)===level);if(pool.length<10)pool=bank;return shuffleSafe(pool).slice(0,10)};
 function levelPaint(){all('[data-level]').forEach(b=>{b.classList.toggle('active',b.dataset.level===level);b.onclick=()=>{level=b.dataset.level;localStorage.setItem('plp-difficulty-v4',level);levelPaint()}})} levelPaint();
 const skins=[{id:'neon',name:'Neon Genesis',desc:'Padrão cyberpunk',required:0},{id:'matrix',name:'Matrix Green',desc:'Desbloqueia com 2 desafios corretos',required:2},{id:'sunset',name:'Synth Sunset',desc:'Desbloqueia com 4 desafios corretos',required:4},{id:'ice',name:'Cryo Blue',desc:'Desbloqueia com 7 desafios corretos',required:7}];
-let unlocked=store('plp-unlocks-v4',[]),chosen=localStorage.getItem('plp-skin-v4')||'neon';
-function paintSkins(){q('#v4Unlocks').innerHTML=`<div><p class="eyebrow">// Workshop rewards</p><h3>Skins desbloqueáveis</h3><p class="muted">Resolva os sete desafios do laboratório. Seus desbloqueios ficam salvos neste aparelho.</p><span class="v4-count">${unlocked.length}/7 desafios concluídos</span></div><div class="v4-skins">${skins.map(s=>{const locked=unlocked.length<s.required;return `<button class="v4-skin ${chosen===s.id?'active':''}" data-skin="${s.id}" ${locked?'disabled':''}><span class="v4-skin-preview skin-${s.id}"></span><strong>${escapeHTML(s.name)}</strong><small>${locked?'🔒 '+escapeHTML(s.desc):chosen===s.id?'✓ Ativa':'Aplicar skin'}</small></button>`}).join('')}</div>`;all('[data-skin]').forEach(b=>b.onclick=()=>{chosen=b.dataset.skin;localStorage.setItem('plp-skin-v4',chosen);applySkin();paintSkins()})}
-function applySkin(){document.documentElement.dataset.skin=chosen} applySkin();paintSkins();
-q('#labCheck')?.addEventListener('plp:legacy-check',()=>{const idx=[...q('#labTabs').querySelectorAll('[data-lab]')].find(x=>x.classList.contains('active'))?.dataset.lab;const radio=q('input[name="labOption"]:checked');if(idx===undefined||!radio||typeof LABS==='undefined')return;if(+radio.value===LABS[+idx].answer&&!unlocked.includes(+idx)){unlocked.push(+idx);set('plp-unlocks-v4',unlocked);paintSkins();const n=document.createElement('div');n.className='v4-unlock-bubble';n.textContent=`✓ Oficina: ${unlocked.length}/7 desafios resolvidos`;document.body.append(n);setTimeout(()=>n.remove(),3500)}});
+let chosen=localStorage.getItem('plp-skin-v4')||'neon';
+const unlockKey='plp-unlocks-v4';
+function progressCount(){
+ // Conquistas anteriores permanecem válidas, mesmo se o cooldown expirar.
+ const old=store(unlockKey,[]);
+ const correct=store('plp-lab-correct-ids',[]);
+ const completed=store('plp-lab-completed-ids',[]);
+ const legacy=Number(localStorage.getItem('plp-lab-ever-completed')||0);
+ return Math.min(7,Math.max(Array.isArray(old)?old.length:0,Array.isArray(correct)?new Set(correct).size:0,Array.isArray(completed)?new Set(completed).size:0,Number.isFinite(legacy)?legacy:0));
+}
+function paintSkins(){
+ const progress=progressCount();
+ const old=store(unlockKey,[]);
+ const previous=Array.isArray(old)?old.filter(n=>Number.isInteger(n)&&n>=0&&n<7):[];
+ const unlocked=[...new Set([...previous,...Array.from({length:progress},(_,i)=>i)])].sort((a,b)=>a-b);
+ if(unlocked.length!==previous.length)set(unlockKey,unlocked);
+ if(!q('#v4Unlocks'))return;
+ q('#v4Unlocks').innerHTML=`<div><p class="eyebrow">Oficina</p><h3>Temas visuais</h3><p class="muted">Resolva questões na Oficina para liberar novas aparências. O progresso não expira com o cooldown das perguntas.</p><span class="v4-count">${progress}/7 conquistas</span></div><div class="v4-skins">${skins.map(s=>{const locked=progress<s.required;return `<button type="button" class="v4-skin ${chosen===s.id?'active':''}" data-skin="${s.id}" ${locked?'disabled':''}><span class="v4-skin-preview skin-${s.id}"></span><strong>${escapeHTML(s.name)}</strong><small>${locked?'Bloqueada · '+escapeHTML(s.desc):chosen===s.id?'✓ Ativa':'Aplicar tema'}</small></button>`}).join('')}</div>`;
+ all('[data-skin]').forEach(b=>b.onclick=()=>{chosen=b.dataset.skin;localStorage.setItem('plp-skin-v4',chosen);applySkin();paintSkins()});
+}
+function applySkin(){document.documentElement.dataset.skin=chosen}
+applySkin();paintSkins();
+window.addEventListener('plp:workshop-progress',paintSkins);
 // Spaced repetition based on small, persisted scheduling intervals.
 const FLASH_KEY='plp-flash-v4', intervals=[0,1,3,7,15,30];let review=store(FLASH_KEY,{}),flashIdx=0,flipped=false,flashTopic='all';
 const notes=typeof QUICK_NOTES==='undefined'?[]:QUICK_NOTES;

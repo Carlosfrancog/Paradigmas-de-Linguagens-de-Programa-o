@@ -1,0 +1,33 @@
+/* Widget de prova: independente dos temas e da navegação */
+.exam-clock-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(20px + env(safe-area-inset-bottom));z-index:990;width:58px;height:58px;border:1px solid #69e4f5;border-radius:50%;background:#0d1932;color:#f3ffff;box-shadow:0 0 0 2px #0d1932,0 8px 35px #020817a6;cursor:pointer;display:grid;place-items:center;isolation:isolate}
+.exam-clock-fab svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.8;position:relative;z-index:2}
+.exam-clock-fab:before,.exam-clock-fab:after{content:"";position:absolute;inset:-1px;border:2px solid #63ddf4;border-radius:50%;z-index:-1;pointer-events:none;animation:examWave 2.6s ease-out infinite}
+.exam-clock-fab:after{animation-delay:1.3s}
+@keyframes examWave{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
+.exam-clock-fab:hover,.exam-clock-fab:focus-visible{transform:translateY(-2px);outline:2px solid #8cf5ff;outline-offset:4px}
+.exam-clock-badge{position:absolute;right:-6px;top:-8px;background:#d8faff;color:#092439;border:1px solid #429bb5;border-radius:12px;padding:2px 6px;font:700 10px/1.4 system-ui,sans-serif;white-space:nowrap}
+.exam-clock-panel{position:fixed;z-index:991;right:max(16px,env(safe-area-inset-right));bottom:calc(92px + env(safe-area-inset-bottom));width:min(360px,calc(100vw - 32px));max-height:min(78dvh,650px);overflow:auto;overscroll-behavior:contain;border:1px solid #4a7590;border-radius:18px;background:#0c1728;color:#edf6ff;box-shadow:0 18px 60px #030b1ad9;padding:20px;font:400 15px/1.5 system-ui,sans-serif}
+.exam-clock-panel[hidden],.exam-install-note[hidden]{display:none!important}
+.exam-clock-panel *{box-sizing:border-box}
+.exam-clock-panel h2{font:700 20px/1.3 system-ui,sans-serif;color:#fff;margin:0}
+.exam-clock-panel p,.exam-clock-panel label{color:#c6dbed}
+.exam-clock-panel p{margin:10px 0}
+.exam-clock-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.exam-clock-close{width:40px;height:40px;display:grid;place-items:center;border:1px solid #56748d;border-radius:10px;background:#172d43;color:white;cursor:pointer;font-size:20px}
+.exam-clock-count{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:18px 0 10px}
+.exam-clock-unit{background:#152d44;border:1px solid #365a74;border-radius:10px;padding:9px 2px;text-align:center;min-width:0}
+.exam-clock-unit strong{display:block;font:700 clamp(20px,6vw,28px)/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;color:#8aefff;font-variant-numeric:tabular-nums}
+.exam-clock-unit span{font-size:11px;color:#d4e2ee}
+.exam-clock-form{display:grid;gap:9px;margin-top:14px}
+.exam-clock-form label{font-weight:600;font-size:13px}
+.exam-clock-form input{display:block;width:100%;min-height:45px;padding:10px;color:#fff;background:#12283d;border:1px solid #5a7d96;border-radius:9px;font:inherit;color-scheme:dark}
+.exam-clock-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 13px;border:1px solid #4a9cad;border-radius:10px;background:#155a6a;color:white;font-weight:700;cursor:pointer;text-align:center}
+.exam-clock-action:hover{background:#167487}
+.exam-clock-action.secondary{background:#1b2f47;border-color:#54718b}
+.exam-clock-panel hr{border:0;border-top:1px solid #37506b;margin:18px 0}
+.exam-install-note{padding:10px 12px;margin-top:10px;border-radius:9px;background:#192c43;border:1px solid #426581;color:#e6f3ff}
+.exam-clock-help{font-size:12px;color:#a8c3d7!important}
+@media(max-width:600px){.exam-clock-fab{right:16px;bottom:calc(17px + env(safe-area-inset-bottom));width:54px;height:54px}.exam-clock-panel{right:8px;bottom:calc(82px + env(safe-area-inset-bottom));width:calc(100vw - 16px);padding:17px;max-height:calc(100dvh - 112px)}}
+@media(prefers-reduced-motion:reduce){.exam-clock-fab:before,.exam-clock-fab:after{animation:none;opacity:.15}.exam-clock-fab:hover{transform:none}}
+
+.exam-clock-fab.exam-clock-ended:before,.exam-clock-fab.exam-clock-ended:after{animation-duration:4s;border-color:#85f4af}
