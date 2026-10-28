@@ -16,7 +16,7 @@
     <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
     <nav id="nav">
       <a href="#estudo">Estudo rápido</a>
-      <a href="#resumos">Resumos</a>
+      <a href="#resumos">Resumos</a><a href="#reader">Leitura guiada</a>
       <a href="#simulado">Simulado</a>
       <a href="#materiais">Materiais</a>
     </nav>
@@ -64,7 +64,7 @@
     <section class="section" id="simulado">
       <div class="section-head">
         <div><p class="eyebrow">Simulado</p><h2>10 questões por tentativa</h2></div>
-        <p>As questões são sorteadas do banco e a pontuação fica salva neste navegador.</p>
+        <p>10 questões, 15 minutos. Ao esgotar o tempo, a tentativa é entregue automaticamente.</p>
       </div>
 
       <div class="quiz-shell">
@@ -74,12 +74,12 @@
             <input id="studentName" maxlength="40" placeholder="Ex.: Carlos" autocomplete="name" />
             <button class="btn primary" id="startQuiz">Iniciar</button>
           </div>
-          <p class="muted">Não há login nem servidor. O nome serve só para separar o histórico local.</p>
+          <p class="muted">Não há login nem servidor: nome, respostas e histórico ficam salvos neste navegador.</p>
         </div>
 
         <div class="quiz hidden" id="quizBox">
-          <div class="quiz-meta"><span id="quizStudent"></span><span id="quizProgress"></span></div>
-          <div id="questionArea"></div>
+          <div class="quiz-meta"><span id="quizStudent"></span><span id="quizProgress"></span><span class="timer" id="quizTimer" aria-live="polite">15:00</span></div>
+          <div id="questionDots" class="question-dots"></div><div id="questionArea"></div>
           <div class="quiz-actions">
             <button class="btn ghost" id="prevQuestion">Anterior</button>
             <button class="btn primary" id="nextQuestion">Próxima</button>
@@ -91,7 +91,7 @@
 
       <div class="history-card">
         <div class="history-head"><h3>Histórico de tentativas</h3><button class="link-btn" id="clearHistory">limpar</button></div>
-        <div id="historyList" class="history-list"></div>
+        <div id="historyList" class="history-list"></div><div id="historyDetail" class="history-detail hidden"></div>
       </div>
     </section>
 
@@ -100,16 +100,16 @@
         <div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
         <p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
       </div>
-      <div class="docs-grid" id="docsGrid"></div>
+      <div class="docs-grid" id="docsGrid"></div><div class="reader" id="reader"><div class="reader-head"><div><p class="eyebrow">Biblioteca interativa</p><h3 id="readerTitle"></h3></div><div class="reader-modes"><button data-mode="original">Original</button><button class="active" data-mode="guided">Guiada</button></div></div><div class="reader-tools"><button class="link-btn" id="docPrev">← Aula anterior</button><a id="pdfNewTab" target="_blank" rel="noopener">Abrir PDF ↗</a><a id="pdfDownload">Baixar PDF ↓</a><button class="link-btn" id="docNext">Próxima aula →</button></div><div class="reader-layout"><iframe title="PDF da aula" id="readerPdf" loading="lazy"></iframe><aside id="readerContent" class="reader-content"></aside></div></div>
     </section>
-  </main>
+  </main><div id="drawerBackdrop" class="drawer-backdrop"></div><aside id="studyDrawer" class="study-drawer" aria-hidden="true" role="dialog" aria-label="Estudo expandido"><div class="drawer-top"><span id="drawerTag" class="tag"></span><button id="drawerClose" aria-label="Fechar estudo">✕</button></div><small id="drawerCounter"></small><h2 id="drawerTitle"></h2><p id="drawerText"></p><div class="drawer-highlight"><strong>Grave isto</strong><p id="drawerKey"></p></div><div id="drawerExtra"></div><div class="drawer-navigation"><button id="drawerPrev">← Anterior</button><button id="drawerNext">Próximo →</button></div></aside>
 
   <footer>
     <p>Portal de apoio aos estudos · Paradigmas de Linguagens de Programação</p>
     <p class="muted">Conteúdo organizado a partir dos materiais fornecidos da disciplina.</p>
   </footer>
 
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
 </body>
 </html>
