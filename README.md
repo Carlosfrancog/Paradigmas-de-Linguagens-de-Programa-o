@@ -1,36 +1,31 @@
-# PLP · portal de estudos (v2)
+# PLP Estudos — V3
 
-Estudos rápidos da disciplina Paradigmas de Linguagens de Programação, com cards navegáveis, resumos, leitura original/guiada dos 14 PDFs e simulados de 10 questões em até 15 minutos.
+Portal estático de revisão de Paradigmas de Linguagens de Programação, construído a partir dos PDFs da disciplina.
 
-## Como executar
+## Funcionalidades
 
-Pode ser hospedado diretamente no GitHub Pages. Para executar localmente, abra um terminal na raiz e rode:
+- 14 PDFs originais incluídos na pasta `material/`;
+- cards de revisão com navegação, 9 resumos e leitor PDF;
+- leitura guiada com explicações próprias das páginas-chave de cada documento, referências de página e consulta ao PDF original;
+- simulado de 10 questões sorteadas em 15 minutos, com correção comentada;
+- histórico local detalhado, estatísticas de notas e evolução por assunto;
+- revisão inteligente, priorizando questões erradas no histórico;
+- laboratório interativo de código (escopo, ponteiros, passagem por valor, laços, OO, enums e tokens).
+
+## Como testar
 
 ```bash
 python -m http.server 8000
 ```
 
-Visite http://localhost:8000. **Não abra o HTML via `file://`**, porque a leitura guiada busca `guided.json` via `fetch`.
+Abra `http://localhost:8000`. Não use `file://`, pois os guias JSON são carregados via `fetch`.
 
-## Arquitetura
+## GitHub Pages
 
-- `index.html`, `styles.css`, `app.js`, `data.js`: frontend estático sem dependências.
-- `guided.json`: guias editoriais dos 14 documentos, mais trechos de texto por página extraídos dos PDFs. Figuras e tabelas continuam nos PDFs originais; a interpretação guiada não equivale a uma explicação detalhada de cada figura de cada slide.
-- `material/`: PDFs originais.
-- `.github/workflows/pages.yml`: publicação pelo GitHub Actions.
-- Banco de questões: 51 perguntas autorais baseadas no material (36 iniciais + 15 novas). Questões novas têm explicações específicas; as iniciais recebem contextualização por tema.
+O workflow `.github/workflows/pages.yml` publica automaticamente o diretório raiz ao enviar commits para `main`. Em Settings → Pages, defina Source = GitHub Actions.
 
-## Histórico e cronômetro
+## Privacidade e limites
 
-- Tentativas são registradas no `localStorage` **deste navegador e dispositivo**; não são compartilhadas entre computadores.
-- Os históricos antigos do portal v1 podem aparecer sem revisão detalhada, pois a v1 salvava apenas nota/nome/data.
-- O prazo de 15 minutos usa horário absoluto (`Date.now`) salvo localmente. A página recupera a prova em andamento após um reload e entrega automaticamente quando o prazo expirou. Isso não é um sistema antifraude com tempo de servidor.
-- O site não precisa de login nem de servidor de dados.
+As notas e tentativas ficam **somente no localStorage deste navegador**. Não há sincronização entre dispositivos, autenticação, classificação pública ou backend. Apagar dados do navegador pode apagar o histórico. O temporizador utiliza o relógio do dispositivo, logo não é um sistema de fiscalização ou prova oficial. O banco de questões fica disponível no JavaScript público e não é mantido em segredo. Bloqueio de F12 não fornece proteção real e não é utilizado.
 
-## Segurança / obfuscação
-
-No GitHub Pages, todos os arquivos entregues ao navegador são públicos. **Não é possível bloquear de verdade o F12, as Ferramentas de Desenvolvedor ou o acesso às respostas do banco de questões.** Bloquear teclado ou menu de contexto apenas atrapalharia acessibilidade e seria facilmente contornado. Para provas avaliativas com segredo real, use backend para armazenar gabaritos, tempo e pontuação.
-
-## Deploy
-
-Configure Pages → Source: GitHub Actions e faça push na branch `main`.
+Leitura guiada: interpreta e explica os pontos relevantes das aulas; **não substitui uma explicação exaustiva de todos os slides**. Alguns PDFs têm imagens e códigos; consulte o original para esses elementos. Conteúdos de paradigmas funcional e lógico têm cobertura introdutória no acervo anexado.

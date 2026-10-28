@@ -17,7 +17,7 @@
     <nav id="nav">
       <a href="#estudo">Estudo rápido</a>
       <a href="#resumos">Resumos</a><a href="#reader">Leitura guiada</a>
-      <a href="#simulado">Simulado</a>
+      <a href="#simulado">Simulado</a><a href="#progresso">Evolução</a><a href="#laboratorio">Laboratório</a>
       <a href="#materiais">Materiais</a>
     </nav>
   </header>
@@ -27,7 +27,7 @@
       <div>
         <p class="eyebrow">Ciência da Computação · 2º semestre de 2026</p>
         <h1>Revisão direta de<br><span>Paradigmas de Linguagens</span></h1>
-        <p class="hero-copy">Material organizado para revisar antes da aula, da atividade ou da prova. Sem feed infinito: conceito, exemplo, revisão e simulado.</p>
+        <p class="hero-copy">Agora com diagnóstico dos seus erros, acompanhamento da evolução, laboratório interativo e leitura guiada. Conceito, prática e revisão no mesmo lugar.</p>
         <div class="hero-actions">
           <a class="btn primary" href="#estudo">Começar revisão</a>
           <a class="btn ghost" href="#simulado">Fazer simulado</a>
@@ -95,7 +95,17 @@
       </div>
     </section>
 
-    <section class="section alt" id="materiais">
+    <section class="section alt" id="progresso">
+  <div class="section-head"><div><p class="eyebrow">Seu aprendizado</p><h2>Painel de evolução</h2></div><p>Histórico de notas, desempenho por matéria e revisão dos conceitos mais difíceis.</p></div>
+  <div class="v3-stats" id="v3Stats"></div>
+  <div class="v3-duo"><div class="v3-panel"><h3>Últimos simulados</h3><div id="v3Graph"></div></div><div class="v3-panel"><h3>Acertos por tema</h3><div id="v3Topics"></div></div></div>
+  <div class="v3-panel v3-review"><div><h3>Revisão inteligente</h3><p>Refaça perguntas que você errou, priorizando os assuntos com pior aproveitamento.</p><p class="muted">O diagnóstico usa somente tentativas com respostas completas salvas neste navegador.</p></div><button class="btn primary" id="startReview">Treinar meus erros</button></div>
+</section>
+<section class="section" id="laboratorio">
+<div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios interativos de fluxo, escopo, referência e objetos — sem compilador remoto.</p></div>
+<div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre id="labCode" class="v3-code"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Verificar resposta</button><div id="labFeedback" aria-live="polite"></div></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Os exemplos são demonstrativos; não executamos código digitado pelo usuário.</p></aside></div></div>
+</section>
+<section class="section alt" id="materiais">
       <div class="section-head">
         <div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
         <p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
@@ -111,5 +121,7 @@
 
   <script defer src="data.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="v3-content.js"></script>
+  <script defer src="v3.js"></script>
 </body>
 </html>
