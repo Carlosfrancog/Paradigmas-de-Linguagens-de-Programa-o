@@ -1,0 +1,5 @@
+# Revisão por mantenedor; configure regras exigindo aprovação de code owner
+* @Carlosfrancog
+/.github/ @Carlosfrancog
+/api-worker/ @Carlosfrancog
+/config.json @Carlosfrancog

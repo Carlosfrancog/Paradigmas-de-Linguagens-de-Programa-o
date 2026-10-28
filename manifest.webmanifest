@@ -1,0 +1,16 @@
+{
+  "name": "PLP // Cyber Study",
+  "short_name": "PLP Study",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080b19",
+  "theme_color": "#080b19",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

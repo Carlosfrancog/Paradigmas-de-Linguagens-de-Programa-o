@@ -1,0 +1,11 @@
+name = "plp-estudos-api"
+main = "index.js"
+compatibility_date = "2026-10-28"
+
+[vars]
+ALLOWED_ORIGINS = "https://carlosfrancog.github.io,http://localhost:8000,http://127.0.0.1:8000"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plp-estudos"
+database_id = "SUBSTITUIR_PELO_ID_DO_D1"

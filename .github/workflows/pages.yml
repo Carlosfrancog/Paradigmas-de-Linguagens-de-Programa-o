@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -16,19 +14,35 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.repository == 'Carlosfrancog/Paradigmas-de-Linguagens-de-Programa-o'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare public static assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/material
+          cp index.html styles.css v4.css app.js data.js v3.js v3-content.js v4.js favicon.svg manifest.webmanifest config.json guided.json guided-v3.json dist/
+          cp material/*.pdf dist/material/
+          test -s dist/index.html
+          test "$(find dist/material -maxdepth 1 -name '*.pdf' | wc -l)" -eq 14
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Upload site
+      - name: Upload public files only
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
