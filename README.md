@@ -36,3 +36,15 @@ Históricos, respostas da oficina, flashcards e preferências visuais são salvo
 
 ### Correções de estabilidade
 O script `workshop.js` é o único responsável pelo estado da Oficina. O arquivo `hotfix-contrast.css` padroniza o contraste dos cards e exercícios. O workflow inclui explicitamente os assets da correção mobile de PDF.
+
+### Oficina: perguntas vistas
+
+A Oficina registra localmente a data de cada questão respondida. Uma pergunta não volta a ser exibida durante **1 hora**; se todas as perguntas de um módulo estiverem indisponíveis, um cronômetro mostra quando a próxima será liberada. Cada módulo tem seu próprio conjunto de perguntas e datas de liberação. A liberação ocorre automaticamente e não apaga o histórico dos simulados. O controle é local ao navegador/dispositivo e não é uma proteção contra manipulação de armazenamento pelo usuário.
+
+### Relógio da prova
+
+O botão flutuante de relógio permite informar data e horário da prova, acompanhar a contagem regressiva e acessar instruções para adicionar o site à tela inicial do celular. A data fica salva apenas no navegador do estudante.
+
+### Contagem regressiva da prova
+
+O relógio flutuante mostra a contagem regressiva até **29/10/2026, 19h10 (horário de São Paulo, UTC−03:00)**. Ao tocar no botão, também são exibidas orientações para adicionar o site à tela inicial do celular. A função não requer cadastro.
