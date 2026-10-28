@@ -1,13 +1,14 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const modules=window.PLP_LAB_MODULES, bank=window.PLP_LAB_BANK;
+const modules=window.PLP_LAB_MODULES||[], bank=window.PLP_LAB_BANK||{};
+const labError=(message)=>{const area=document.querySelector('#labFeedback');if(area)area.innerHTML=`<div class="v3-feedback bad" role="alert"><strong>Não foi possível carregar a Oficina.</strong><p>${message}</p><button type="button" class="btn ghost" onclick="location.reload()">Recarregar</button></div>`;};
 const KEY='plp-workshop-done-v5';
 const EXECUTOR_CONFIG='executor-config.json';
 let executorBase='';
 fetch(EXECUTOR_CONFIG,{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(c=>{executorBase=typeof c.baseUrl==='string'?c.baseUrl.replace(/\/$/,''):''}).catch(()=>{});
 
-let done;try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{done={}}
+let done;try{done=JSON.parse(localStorage.getItem(KEY)||'{}');if(!done||typeof done!=='object'||Array.isArray(done))done={}}catch{done={}}
 let currentModule='imperativo',question=null,answered=false;
 let execution=null;
 const isRunnable=q=>q&&['imperativo','ponteiros','escopo','tipos','subprogramas','sintaxe'].includes(currentModule)&&!/(\bclass\s|\binterface\s|\bextends\b|\bimplements\b|\bdef\s|\bprint\s*\(|\bSystem\.|\bnew\s|\babstract\s|\bvoid\s+\w+\s*\(|\bint\s+\w+\s*\([^;]*\)\s*\{)/.test(q.code)&&!q.code.includes('...');
@@ -20,14 +21,14 @@ function updateSkins(){
  const count=Object.keys(done).length;
  const unlocks=Array.from({length:Math.min(7,count)},(_,i)=>i);
  try{for(const n of JSON.parse(localStorage.getItem('plp-unlocks-v4')||'[]'))if(!unlocks.includes(n))unlocks.push(n)}catch{}
- localStorage.setItem('plp-unlocks-v4',JSON.stringify(unlocks));
+ try{localStorage.setItem('plp-unlocks-v4',JSON.stringify(unlocks))}catch{}
  const need={neon:0,matrix:2,sunset:4,ice:7};
  document.querySelectorAll('[data-skin]').forEach(b=>{const ok=unlocks.length>=need[b.dataset.skin];b.disabled=!ok;const sm=b.querySelector('small');if(sm&&ok)sm.textContent='Disponível · toque para aplicar'});
  const tally=$('.v4-count');if(tally)tally.textContent=unlocks.length+'/7 skins liberadas';
 }
 function chooseNext(){
  answered=false; hideRunner(); $('#labCheck').disabled=false;$('#labCheck').classList.remove('hidden');$('#labNext').classList.add('hidden');$('#labFeedback').innerHTML='';
- const unseen=bank[currentModule].filter(x=>!done[x.id]);
+ const available=bank[currentModule]||[]; if(!available.length){labError('Banco de perguntas indisponível. Atualize a página ou confira o deploy de lab-bank.js.');return;} const unseen=available.filter(x=>!done[x.id]);
  question=unseen[Math.floor(Math.random()*unseen.length)]||null;
  $('#labQuestionCount').textContent=`${unseen.length} exercícios disponíveis neste módulo`;
  if(!question){$('#labTopic').textContent='';$('#labTitle').textContent='Módulo concluído';$('#labIntro').textContent='Você respondeu todas as questões deste módulo neste navegador. Selecione outro módulo para continuar.';$('#labCode').textContent='';$('#labOptions').innerHTML='';$('#labCheck').classList.add('hidden');return}
@@ -49,6 +50,7 @@ $('#labCheck').onclick=()=>{
 $('#labNext').onclick=chooseNext;
 $('#labRunBtn').onclick=async()=>{if(!answered||!question||!isRunnable(question))return;const code=$('#labEditor').value;const output=$('#labRunOutput');if(code.length>12000){output.textContent='Limite: 12.000 caracteres.';return}if(!executorBase){output.textContent='Execução remota ainda não ativada. Configure executor-config.json com a URL do Worker publicado.';return}$('#labRunBtn').disabled=true;output.textContent='Compilando e executando…';const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);try{const r=await fetch(executorBase+'/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'c',code}),signal:controller.signal});const d=await r.json();if(!r.ok)throw Error(d.error||'Falha HTTP '+r.status);output.textContent=[d.compileOutput&&'Compilador:\n'+d.compileOutput,d.runOutput&&'Saída:\n'+d.runOutput,d.exitCode!==null&&d.exitCode!==undefined?'Código de saída: '+d.exitCode:null].filter(Boolean).join('\n\n')||'(O programa terminou sem imprimir dados.)'}catch(e){output.textContent=e.name==='AbortError'?'Tempo limite da requisição excedido.':'Não foi possível executar: '+e.message}finally{clearTimeout(timeout);$('#labRunBtn').disabled=false}};
 $('#labResetCode').onclick=()=>{if(answered&&question)$('#labEditor').value=isRunnable(question)?codeFor(question):question.code};
+if(!modules.length){labError('Nenhum módulo foi carregado. Verifique o arquivo lab-bank.js.');return;}
 $('#labModule').innerHTML=modules.map(m=>`<option value="${esc(m.id)}">${esc(m.name)} · 112 exercícios</option>`).join('');
 $('#labModule').onchange=e=>{currentModule=e.target.value;chooseNext()};
 updateSkins();chooseNext();

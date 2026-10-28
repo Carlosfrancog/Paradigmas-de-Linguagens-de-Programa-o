@@ -32,3 +32,7 @@ A versão pública é composta exclusivamente pelos arquivos estáticos listados
 ## Privacidade
 
 Históricos, respostas da oficina, flashcards e preferências visuais são salvos em `localStorage` no navegador. Eles não são sincronizados entre dispositivos. Limpar os dados do navegador pode apagá-los.
+
+
+### Correções de estabilidade
+O script `workshop.js` é o único responsável pelo estado da Oficina. O arquivo `hotfix-contrast.css` padroniza o contraste dos cards e exercícios. O workflow inclui explicitamente os assets da correção mobile de PDF.
