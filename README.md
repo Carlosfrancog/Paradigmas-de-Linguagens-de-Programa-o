@@ -50,12 +50,6 @@ O navegador guarda as respostas detalhadas apenas em `localStorage`. A API receb
 
 A classificação de dificuldade é heurística e editorial. Os PDFs permanecem a fonte da disciplina; o guia interpretativo não substitui o material original. A API não comprova que as notas foram obtidas por alunos reais. Ainda não há conta, sincronização de progresso individual ou execução remota de código.
 
-## Proteger a branch `main` (configuração manual do proprietário)
-
-No GitHub, acesse **Settings → Rules → Rulesets → New branch ruleset** (ou **Branches → Add branch protection rule**, se disponível). Alvo: `main`. Exija Pull Request, pelo menos 1 aprovação de mantenedor, aprovação do CODEOWNERS quando disponível, resolução de conversas e bloqueio de force push/deleção. Restrinja bypasses e deixe GitHub Actions com permissões padrão de leitura. Antes de exigir checks, crie e valide um check de PR; o workflow de publicação roda somente após merge em `main`.
-
-Em repositórios públicos pessoais, algumas restrições podem depender das funcionalidades disponíveis no plano GitHub. Confirme o que sua conta permite antes de marcar opções.
-
 ## V5 — Rotas, oficina e wallet
 
 O projeto mantém o histórico da V4. A navegação agora usa rotas estáticas via *hash* (`#inicio`, `#estudo`, `#resumos`, `#materiais`, `#simulado`, `#progresso`, `#laboratorio`, `#wallet`, `#flashcards`, `#comunidade`). São rotas client-side compatíveis com Pages e recarregamento direto, sem arquivos HTML duplicados.
