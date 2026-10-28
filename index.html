@@ -1,146 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#080b19" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <title>PLP · Estudos rápidos</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="v4.css" />
-  <link rel="stylesheet" href="v5.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#080b19" name="theme-color"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="manifest.webmanifest" rel="manifest"/>
+<title>PLP · Estudos rápidos</title>
+<link href="styles.css" rel="stylesheet"/>
+<link href="v4.css" rel="stylesheet"/>
+<link href="v5.css" rel="stylesheet"/>
+<link href="lab-runner.css" rel="stylesheet"/>
+
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Início">
-      <span class="brand-mark">⌘</span>
-      <span><strong>Paradigmas</strong><small>estudos rápidos</small></span>
-    </a>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
-    <nav id="nav">
-      <a href="#estudo">Estudo rápido</a>
-      <a href="#resumos">Resumos</a><a href="#reader">Leitura guiada</a>
-      <a href="#simulado">Simulado</a><a href="#progresso">Evolução</a><a href="#laboratorio">Laboratório</a>
-      <a href="#materiais">Materiais</a><a href="#wallet">Wallet</a><a href="#flashcards">Flashcards</a><a href="#comunidade">Comunidade</a>
-    </nav>
-  </header>
+<header class="topbar">
+<a aria-label="Início" class="brand" href="#inicio">
+<span class="brand-mark">⌘</span>
+<span><strong>Paradigmas</strong><small>estudos rápidos</small></span>
+</a>
+<button aria-label="Abrir menu" class="menu-btn" id="menuBtn">☰</button>
+<nav id="nav">
+<a class="nav-feature" href="#laboratorio">Oficina</a><a href="#estudo">Estudo rápido</a>
+<a href="#resumos">Resumos</a><a href="#reader">Leitura guiada</a>
+<a href="#simulado">Simulado</a><a href="#progresso">Evolução</a>
+<a href="#materiais">Materiais</a><a href="#flashcards">Flashcards</a>
+</nav>
+</header>
+<main>
+<section class="hero home-page" id="inicio">
+<div class="home-intro">
+<p class="eyebrow">PARADIGMAS DE LINGUAGENS DE PROGRAMAÇÃO</p>
+<h1>Estude a matéria.<br/><span>Teste o que aprendeu.</span></h1>
+<p class="hero-copy">Revise conceitos, resolva exercícios na Oficina e faça simulados de 10 questões. Tudo gratuito e sem cadastro.</p>
+<div class="hero-actions"><a class="btn primary" href="#laboratorio">Praticar na oficina →</a><a class="btn ghost" href="#estudo">Revisar a matéria</a></div>
 
-  <main>
-    <section class="hero" id="inicio">
-      <div>
-        <p class="eyebrow">CIÊNCIA DA COMPUTAÇÃO / MATERIAL DE ESTUDO</p>
-        <h1>Paradigmas de<br><span>programação.</span></h1>
-        <p class="hero-copy">Um espaço para estudar as aulas, testar conceitos e acompanhar o que você aprendeu. Material da disciplina, exercícios e simulados reunidos aqui.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#estudo">Começar revisão</a>
-          <a class="btn ghost" href="#simulado">Fazer simulado</a>
-        </div>
-      </div>
-      <aside class="paper-note">
-        <span>Para começar</span>
-        <ol>
-          <li>Leia os pontos-chave</li>
-          <li>Abra o resumo do tema</li>
-          <li>Faça 10 questões</li>
-          <li>Revise os erros</li>
-        </ol>
-      </aside>
-    </section>
+</div>
+<div aria-label="Opções para estudar" class="home-paths">
+<a class="home-path" href="#laboratorio"><span class="home-path-number">01</span><div><h2>Oficina</h2><p>Resolva exercícios de código, veja a correção e avance para a próxima questão.</p></div><span aria-hidden="true">↗</span></a>
+<a class="home-path" href="#estudo"><span class="home-path-number">02</span><div><h2>Revisão rápida</h2><p>Passe pelos conceitos essenciais da disciplina, um card de cada vez.</p></div><span aria-hidden="true">↗</span></a>
+<a class="home-path" href="#simulado"><span class="home-path-number">03</span><div><h2>Simulado</h2><p>10 questões, 15 minutos e correção comentada no final.</p></div><span aria-hidden="true">↗</span></a>
 
-    <section class="section" id="estudo">
-      <div class="section-head">
-        <div><p class="eyebrow">Estudo rápido</p><h2>O que vale lembrar</h2></div>
-        <p>Blocos curtos para revisar os conceitos centrais das aulas.</p>
-      </div>
-      <div class="topic-filter" id="topicFilter"></div>
-      <div class="quick-grid" id="quickGrid"></div>
-    </section>
-
-    <section class="section alt" id="resumos">
-      <div class="section-head">
-        <div><p class="eyebrow">Resumos</p><h2>Matéria por blocos</h2></div>
-        <p>Abra um bloco e revise definição, diferenças e exemplos.</p>
-      </div>
-      <div class="accordion" id="summaryList"></div>
-    </section>
-
-    <section class="section" id="simulado">
-      <div class="section-head">
-        <div><p class="eyebrow">Simulado</p><h2>10 questões por tentativa</h2></div>
-        <p>10 questões, 15 minutos. Ao esgotar o tempo, a tentativa é entregue automaticamente.</p>
-      </div>
-
-      <div class="quiz-shell">
-        <div class="quiz-start" id="quizStart"><div id="v4QuizControls" class="v4-quiz-controls"></div>
-          <label for="studentName">Seu nome</label>
-          <div class="name-row">
-            <input id="studentName" maxlength="40" placeholder="Ex.: Carlos" autocomplete="name" />
-            <button class="btn primary" id="startQuiz">Iniciar</button>
-          </div>
-          <p class="muted">Seu histórico fica neste dispositivo; com a API da comunidade configurada, a pontuação também é enviada ao mural global. Nunca publicamos suas respostas detalhadas.</p>
-        </div>
-
-        <div class="quiz hidden" id="quizBox">
-          <div class="quiz-meta"><span id="quizStudent"></span><span id="quizProgress"></span><span class="timer" id="quizTimer" aria-live="polite">15:00</span></div>
-          <div id="questionDots" class="question-dots"></div><div id="questionArea"></div>
-          <div class="quiz-actions">
-            <button class="btn ghost" id="prevQuestion">Anterior</button>
-            <button class="btn primary" id="nextQuestion">Próxima</button>
-          </div>
-        </div>
-
-        <div class="result hidden" id="resultBox"></div>
-      </div>
-
-      <div class="history-card">
-        <div class="history-head"><h3>Histórico de tentativas</h3><button class="link-btn" id="clearHistory">limpar</button></div>
-        <div id="historyList" class="history-list"></div><div id="historyDetail" class="history-detail hidden"></div>
-      </div>
-    </section>
-
-    <section class="section alt" id="progresso">
-  <div class="section-head"><div><p class="eyebrow">Seu aprendizado</p><h2>Painel de evolução</h2></div><p>Histórico de notas, desempenho por matéria e revisão dos conceitos mais difíceis.</p></div>
-  <div class="v3-stats" id="v3Stats"></div><p class="v4-global-caption" id="globalStatus">Mural global: conectando...</p>
-  <div class="v3-duo"><div class="v3-panel"><h3>Últimos simulados</h3><div id="v3Graph"></div></div><div class="v3-panel"><h3>Acertos por tema</h3><div id="v3Topics"></div></div></div>
-  <div class="v3-panel v3-review"><div><h3>Revisão inteligente</h3><p>Refaça perguntas que você errou, priorizando os assuntos com pior aproveitamento.</p><p class="muted">O diagnóstico usa somente tentativas com respostas completas salvas neste navegador.</p></div><button class="btn primary" id="startReview">Treinar meus erros</button></div>
+</div>
+</section>
+<section class="section" id="estudo">
+<div class="section-head">
+<div><p class="eyebrow">Estudo rápido</p><h2>O que vale lembrar</h2></div>
+<p>Blocos curtos para revisar os conceitos centrais das aulas.</p>
+</div>
+<div class="topic-filter" id="topicFilter"></div>
+<div class="quick-grid" id="quickGrid"></div>
+</section>
+<section class="section alt" id="resumos">
+<div class="section-head">
+<div><p class="eyebrow">Resumos</p><h2>Matéria por blocos</h2></div>
+<p>Abra um bloco e revise definição, diferenças e exemplos.</p>
+</div>
+<div class="accordion" id="summaryList"></div>
+</section>
+<section class="section" id="simulado">
+<div class="section-head">
+<div><p class="eyebrow">Simulado</p><h2>10 questões por tentativa</h2></div>
+<p>10 questões, 15 minutos. Ao esgotar o tempo, a tentativa é entregue automaticamente.</p>
+</div>
+<div class="quiz-shell">
+<div class="quiz-start" id="quizStart"><div class="v4-quiz-controls" id="v4QuizControls"></div>
+<label for="studentName">Seu nome</label>
+<div class="name-row">
+<input autocomplete="name" id="studentName" maxlength="40" placeholder="Ex.: Carlos"/>
+<button class="btn primary" id="startQuiz">Iniciar</button>
+</div>
+<p class="muted">O histórico de simulados e as correções ficam salvos neste navegador. Não é necessário criar conta.</p>
+</div>
+<div class="quiz hidden" id="quizBox">
+<div class="quiz-meta"><span id="quizStudent"></span><span id="quizProgress"></span><span aria-live="polite" class="timer" id="quizTimer">15:00</span></div>
+<div class="question-dots" id="questionDots"></div><div id="questionArea"></div>
+<div class="quiz-actions">
+<button class="btn ghost" id="prevQuestion">Anterior</button>
+<button class="btn primary" id="nextQuestion">Próxima</button>
+</div>
+</div>
+<div class="result hidden" id="resultBox"></div>
+</div>
+<div class="history-card">
+<div class="history-head"><h3>Histórico de tentativas</h3><button class="link-btn" id="clearHistory">limpar</button></div>
+<div class="history-list" id="historyList"></div><div class="history-detail hidden" id="historyDetail"></div>
+</div>
+</section>
+<section class="section alt" id="progresso">
+<div class="section-head"><div><p class="eyebrow">Seu aprendizado</p><h2>Painel de evolução</h2></div><p>Histórico de notas, desempenho por matéria e revisão dos conceitos mais difíceis.</p></div>
+<div class="v3-stats" id="v3Stats"></div>
+<div class="v3-duo"><div class="v3-panel"><h3>Últimos simulados</h3><div id="v3Graph"></div></div><div class="v3-panel"><h3>Acertos por tema</h3><div id="v3Topics"></div></div></div>
+<div class="v3-panel v3-review"><div><h3>Revisão inteligente</h3><p>Refaça perguntas que você errou, priorizando os assuntos com pior aproveitamento.</p><p class="muted">O diagnóstico usa somente tentativas com respostas completas salvas neste navegador.</p></div><button class="btn primary" id="startReview">Treinar meus erros</button></div>
 </section>
 <section class="section" id="laboratorio">
-<div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios interativos de fluxo, escopo, referência e objetos — sem compilador remoto.</p></div>
-<div class="v4-unlocks" id="v4Unlocks"></div><div class="wallet-strip"><div><span class="eyebrow">CARTEIRA / PLP COINS</span><h3>Seu progresso vale coins.</h3><p>Entre com uma conta para ganhar coins quando acertar uma questão validada online. Ranking público só exibe nome e saldo.</p></div><a class="btn primary" href="#wallet">Abrir wallet</a></div><div class="lab-queue"><label for="labModule">Módulo</label><select id="labModule"></select><span id="labQuestionCount"></span></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre id="labCode" class="v3-code"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Confirmar resposta</button><button class="btn ghost hidden" id="labNext" type="button">Próxima questão →</button><div id="labFeedback" aria-live="polite"></div></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Os exemplos são demonstrativos; não executamos código digitado pelo usuário.</p></aside></div></div>
+<div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios interativos de fluxo, escopo, referência e objetos — agora com execução opcional de exemplos C após a correção.</p></div>
+<div class="v4-unlocks" id="v4Unlocks"></div><div class="lab-queue"><label for="labModule">Módulo</label><select id="labModule"></select><span id="labQuestionCount"></span></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre class="v3-code" id="labCode"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Confirmar resposta</button><button class="btn ghost hidden" id="labNext" type="button">Próxima questão →</button><div aria-live="polite" id="labFeedback"></div><section class="lab-runner hidden" id="labRunner" aria-label="Executar e editar código"><div class="lab-runner-head"><h4>Experimentar o código</h4><span id="labRunLanguage"></span></div><p>Depois de conferir sua resposta, altere o exemplo e veja o comportamento do programa.</p><label for="labEditor">Código</label><textarea id="labEditor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea><div class="lab-runner-actions"><button type="button" class="btn primary" id="labRunBtn">▶ Executar</button><button type="button" class="btn ghost" id="labResetCode">Restaurar exemplo</button></div><label for="labRunOutput">Resultado</label><pre id="labRunOutput" role="status" aria-live="polite"></pre></section></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Alguns exemplos são conceituais. Código C pode ser executado em ambiente remoto isolado quando o serviço estiver configurado.</p></aside></div></div>
 </section>
-    <section class="section" id="wallet"><div class="section-head"><div><p class="eyebrow">PLP COINS</p><h2>Wallet e ranking</h2></div><p>Coins por acertos validados. O ranking mostra apenas o nome público da conta e o saldo.</p></div><div class="wallet-layout"><div class="v4-panel"><h3>Acessar carteira</h3><form id="walletForm"><label>Nome de usuário<input id="walletName" required maxlength="32" minlength="3" autocomplete="username" placeholder="Seu nome de usuário" /></label><label>Senha<input id="walletPass" type="password" minlength="10" maxlength="128" autocomplete="current-password" required placeholder="Pelo menos 10 caracteres" /></label><div class="wallet-buttons"><button class="btn primary" type="submit" data-mode="login">Entrar</button><button class="btn ghost" type="button" id="walletRegister">Criar wallet</button><button class="btn ghost" type="button" id="walletLogout">Sair</button></div></form><div id="walletState" aria-live="polite" class="wallet-state"></div></div><div class="v4-panel"><h3>Ranking de coins</h3><p class="muted">Classificação global quando a API estiver configurada.</p><div id="walletRanking"></div></div></div></section>
-    <section class="section" id="flashcards">
-      <div class="section-head"><div><p class="eyebrow">Recuperação ativa</p><h2>Flashcards espaçados</h2></div><p>Revise agora, marque a dificuldade e receba o próximo cartão na data certa.</p></div>
-      <div class="v4-flash-zone"><div class="v4-flash-top"><span id="flashDue">Carregando cartões</span><select id="flashTopic" aria-label="Filtrar flashcards por assunto"></select></div>
-      <button class="v4-flash-card" id="flashCard" type="button" aria-label="Virar cartão"></button><div class="v4-flash-actions" id="flashActions"><button data-grade="0">Não lembrei</button><button data-grade="1">Difícil</button><button data-grade="2">Lembrei</button><button data-grade="3">Fácil</button></div></div>
-    </section>
-    <section class="section alt" id="comunidade">
-      <div class="section-head"><div><p class="eyebrow">Comunidade PLP</p><h2>O que a turma achou?</h2></div><p>Notas e comentários são compartilhados entre dispositivos quando a API está configurada.</p></div>
-      <div class="v4-community-grid"><div class="v4-panel"><h3>Placares recentes</h3><div id="globalScores">Carregando...</div></div><div class="v4-panel"><h3>Feedback da turma</h3><div id="globalFeedback">Carregando...</div><button class="btn primary" id="openFeedback">Avaliar este portal</button></div></div>
-    </section>
+
+<section class="section" id="flashcards">
+<div class="section-head"><div><p class="eyebrow">Recuperação ativa</p><h2>Flashcards espaçados</h2></div><p>Revise agora, marque a dificuldade e receba o próximo cartão na data certa.</p></div>
+<div class="v4-flash-zone"><div class="v4-flash-top"><span id="flashDue">Carregando cartões</span><select aria-label="Filtrar flashcards por assunto" id="flashTopic"></select></div>
+<button aria-label="Virar cartão" class="v4-flash-card" id="flashCard" type="button"></button><div class="v4-flash-actions" id="flashActions"><button data-grade="0">Não lembrei</button><button data-grade="1">Difícil</button><button data-grade="2">Lembrei</button><button data-grade="3">Fácil</button></div></div>
+</section>
+
 <section class="section alt" id="materiais">
-      <div class="section-head">
-        <div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
-        <p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
-      </div>
-      <div class="docs-grid" id="docsGrid"></div><div class="reader" id="reader"><div class="reader-head"><div><p class="eyebrow">Biblioteca interativa</p><h3 id="readerTitle"></h3></div><div class="reader-modes"><button data-mode="original">Original</button><button class="active" data-mode="guided">Guiada</button></div></div><div class="reader-tools"><button class="link-btn" id="docPrev">← Aula anterior</button><a id="pdfNewTab" target="_blank" rel="noopener">Abrir PDF ↗</a><a id="pdfDownload">Baixar PDF ↓</a><button class="link-btn" id="docNext">Próxima aula →</button></div><div class="reader-layout"><iframe title="PDF da aula" id="readerPdf" loading="lazy"></iframe><aside id="readerContent" class="reader-content"></aside></div></div>
-    </section>
-  </main><div id="drawerBackdrop" class="drawer-backdrop"></div><aside id="studyDrawer" class="study-drawer" aria-hidden="true" role="dialog" aria-label="Estudo expandido"><div class="drawer-top"><span id="drawerTag" class="tag"></span><button id="drawerClose" aria-label="Fechar estudo">✕</button></div><small id="drawerCounter"></small><h2 id="drawerTitle"></h2><p id="drawerText"></p><div class="drawer-highlight"><strong>Grave isto</strong><p id="drawerKey"></p></div><div id="drawerExtra"></div><div class="drawer-navigation"><button id="drawerPrev">← Anterior</button><button id="drawerNext">Próximo →</button></div></aside>
+<div class="section-head">
+<div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
+<p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
+</div>
+<div class="docs-grid" id="docsGrid"></div><div class="reader" id="reader"><div class="reader-head"><div><p class="eyebrow">Biblioteca interativa</p><h3 id="readerTitle"></h3></div><div class="reader-modes"><button data-mode="original">Original</button><button class="active" data-mode="guided">Guiada</button></div></div><div class="reader-tools"><button class="link-btn" id="docPrev">← Aula anterior</button><a id="pdfNewTab" rel="noopener" target="_blank">Abrir PDF ↗</a><a id="pdfDownload">Baixar PDF ↓</a><button class="link-btn" id="docNext">Próxima aula →</button></div><div class="reader-layout"><iframe id="readerPdf" loading="lazy" title="PDF da aula"></iframe><aside class="reader-content" id="readerContent"></aside></div></div>
+</section>
+</main><div class="drawer-backdrop" id="drawerBackdrop"></div><aside aria-hidden="true" aria-label="Estudo expandido" class="study-drawer" id="studyDrawer" role="dialog"><div class="drawer-top"><span class="tag" id="drawerTag"></span><button aria-label="Fechar estudo" id="drawerClose">✕</button></div><small id="drawerCounter"></small><h2 id="drawerTitle"></h2><p id="drawerText"></p><div class="drawer-highlight"><strong>Grave isto</strong><p id="drawerKey"></p></div><div id="drawerExtra"></div><div class="drawer-navigation"><button id="drawerPrev">← Anterior</button><button id="drawerNext">Próximo →</button></div></aside>
 
-  <div class="v4-feedback-toast" id="feedbackToast" role="status" aria-live="polite" hidden><button class="v4-toast-close" id="feedbackToastClose" aria-label="Dispensar">×</button><span class="v4-toast-top">// SINAL DA COMUNIDADE</span><strong>Esse portal te ajudou?</strong><p>Sua opinião melhora o conteúdo pra todo mundo.</p><button class="btn primary" id="feedbackToastOpen">Deixar avaliação ↗</button></div>
-  <dialog class="v4-feedback-modal" id="feedbackModal" aria-labelledby="feedbackTitle"><form method="dialog" id="feedbackForm"><button type="button" id="feedbackClose" class="v4-dialog-close">×</button><p class="eyebrow">// FEEDBACK LOOP</p><h2 id="feedbackTitle">Como foi estudar aqui?</h2><label class="v4-form-label" for="feedbackStars">Sua avaliação</label><div class="v4-stars" id="feedbackStars" role="group" aria-label="Nota de 1 a 5 estrelas"></div><label class="v4-form-label" for="feedbackName">Nome (opcional)</label><input id="feedbackName" maxlength="40" placeholder="Anônimo" /><label class="v4-form-label" for="feedbackComment">Comentário (opcional)</label><textarea id="feedbackComment" maxlength="500" rows="4" placeholder="O que funcionou? O que pode melhorar?"></textarea><label class="v4-check"><input type="checkbox" id="feedbackAnon" checked /> Publicar anonimamente</label><p class="muted" id="feedbackMessage"></p><button type="submit" class="btn primary" id="feedbackSubmit">Enviar avaliação</button></form></dialog>
-  <footer>
-    <p>Portal de apoio aos estudos · Paradigmas de Linguagens de Programação</p>
-    <p class="muted">Conteúdo organizado a partir dos materiais fornecidos da disciplina.</p>
-  </footer>
 
-  <script defer src="data.js"></script>
-  <script defer src="app.js"></script>
-  <script defer src="v3-content.js"></script>
-  <script defer src="v3.js"></script>
-  <script defer src="v4.js"></script>
-  <script defer src="lab-bank.js"></script>
-  <script defer src="v5.js"></script>
+<footer>
+<p>Portal de apoio aos estudos · Paradigmas de Linguagens de Programação</p>
+<p class="muted">Conteúdo organizado a partir dos materiais fornecidos da disciplina.</p>
+</footer>
+<script defer="" src="data.js"></script>
+<script defer="" src="app.js"></script>
+<script defer="" src="v3-content.js"></script>
+<script defer="" src="v3.js"></script>
+<script defer="" src="v4.js"></script>
+<script defer="" src="lab-bank.js"></script>
+<script defer="" src="workshop.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,6 @@
+name = "plp-code-runner"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+# Configure ALLOWED_ORIGINS and PISTON_URL using Wrangler vars or dashboard.
+# Any runner token must be set as a Worker secret, never in Git.

@@ -11,3 +11,7 @@ node_modules/
 dist/
 .DS_Store
 Thumbs.db
+
+OPERACAO_PRIVADA.md
+api-worker/.dev.vars
+api-worker/.dev.vars.*
