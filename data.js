@@ -1,0 +1,98 @@
+const TOPICS = [
+  {id:'fundamentos',label:'Fundamentos'}, {id:'linguagens',label:'Implementação'}, {id:'sintaxe',label:'Sintaxe & semântica'},
+  {id:'tipos',label:'Tipos'}, {id:'imperativo',label:'Imperativo'}, {id:'oo',label:'Orientação a objetos'}
+];
+
+const QUICK_NOTES = [
+ {topic:'fundamentos',title:'Paradigma de programação',text:'É um padrão para resolução de problemas e para a representação computacional da solução.',remember:'4 principais: imperativo, OO, funcional e lógico.'},
+ {topic:'fundamentos',title:'Imperativo × lógico',text:'No imperativo o programa explicita como executar a solução; no lógico, descreve-se o problema e o que se deseja obter.',remember:'Prolog é o exemplo central de paradigma lógico no material.'},
+ {topic:'fundamentos',title:'Funcional',text:'Modela o problema por funções matemáticas que interagem por composição funcional.',remember:'Exemplos citados: LISP, Haskell, Scheme e ML.'},
+ {topic:'linguagens',title:'Compilação',text:'Traduz o programa fonte para código de máquina de uma plataforma e gera um executável.',remember:'C, C++, Fortran e Pascal aparecem como exemplos.'},
+ {topic:'linguagens',title:'Interpretação',text:'O interpretador traduz e executa as instruções simultaneamente na máquina alvo.',remember:'O material cita Lisp, JavaScript, PHP e Python.'},
+ {topic:'linguagens',title:'Método híbrido',text:'Compila o fonte para código intermediário e esse código é executado por um interpretador ou máquina virtual.',remember:'Java e linguagens .NET aparecem como exemplos.'},
+ {topic:'sintaxe',title:'Sintaxe × semântica',text:'Sintaxe é a forma das expressões e sentenças; semântica é o significado delas.',remember:'Forma × significado.'},
+ {topic:'sintaxe',title:'Lexema, token e padrão',text:'Lexema é a sequência de caracteres; token é sua classificação; padrão descreve a forma aceita para os lexemas.',remember:'Ex.: “int” é lexema classificado como palavra reservada.'},
+ {topic:'sintaxe',title:'Semântica estática × dinâmica',text:'Estática pode ser verificada em compilação; dinâmica só pode ser verificada durante a execução.',remember:'O material ressalta que linguagens interpretadas não têm verificação estática por definição.'},
+ {topic:'tipos',title:'Tipo de dado',text:'É um conjunto de valores e um conjunto de operações predefinidas aplicáveis a esses valores.',remember:'Tipos podem ser básicos/primitivos ou compostos.'},
+ {topic:'tipos',title:'Tipagem estática × dinâmica',text:'Na estática, o tipo é definido na declaração e não muda; na dinâmica, o tipo decorre do valor atribuído em execução.',remember:'Java/C++ × Python/PHP/JavaScript nos exemplos.'},
+ {topic:'tipos',title:'Força de tipagem',text:'Quanto mais exigente a linguagem é com operações entre tipos diferentes, mais fortemente tipada ela é.',remember:'Coerção e conversões implícitas enfraquecem a tipagem.'},
+ {topic:'tipos',title:'Tipos compostos',text:'São construídos a partir de outros tipos: enumerações, registros/estruturas, vetores/matrizes e objetos.',remember:'Enum restringe valores; struct/record agrupa campos.'},
+ {topic:'tipos',title:'Ponteiro',text:'É um valor que representa um endereço de memória.',remember:'Base para listas, pilhas, filas e árvores.'},
+ {topic:'imperativo',title:'Imperativo',text:'Está diretamente ligado à arquitetura de von Neumann: memória, atribuição, sequência, seleção e repetição.',remember:'Abstração procedural é uma característica central.'},
+ {topic:'imperativo',title:'Estruturado × não estruturado',text:'O não estruturado usa goto/jump; o estruturado privilegia seleção, repetição e subprogramas.',remember:'Dijkstra é associado à crítica ao uso excessivo de goto.'},
+ {topic:'imperativo',title:'Abstração procedural',text:'Permite pensar na interface e no que a função calcula, ignorando os detalhes internos do cálculo.',remember:'Decomponha até chegar a operações primitivas da linguagem.'},
+ {topic:'imperativo',title:'Passagem por valor × referência',text:'Valor copia o dado para o parâmetro formal; referência fornece um caminho/endereço para o dado original.',remember:'Referência evita cópia, mas aumenta risco de alterações inadvertidas.'},
+ {topic:'oo',title:'Três bases da POO',text:'Tipos abstratos/classes, herança e vinculação dinâmica de métodos (polimorfismo).',remember:'OO busca reusabilidade, manutenibilidade e extensibilidade.'},
+ {topic:'oo',title:'Classe × objeto',text:'Classe é uma declaração de tipo que define estado e comportamento; objeto é uma instância da classe.',remember:'Atributos guardam estado; métodos definem comportamento.'},
+ {topic:'oo',title:'Encapsulamento',text:'Oculta a representação interna e expõe operações controladas para manipular os dados.',remember:'No material, atributos tendem a ser privados/protegidos e métodos públicos.'},
+ {topic:'oo',title:'Herança',text:'Uma subclasse reutiliza membros de uma superclasse e pode adicionar ou modificar comportamentos.',remember:'Java/C# têm herança simples; C++/Python permitem múltipla.'},
+ {topic:'oo',title:'Polimorfismo',text:'É a ligação tardia entre uma chamada e diferentes implementações de um método numa hierarquia.',remember:'Sobrecarga = estático; sobrescrita = dinâmico.'}
+];
+
+const SUMMARIES = [
+ {title:'Evolução e paradigmas',body:`<h4>Ideia central</h4><p>Uma linguagem de programação reúne termos e regras sintáticas e semânticas capazes de formar instruções processáveis. Um paradigma é um padrão para resolver e representar computacionalmente um problema.</p><h4>Quatro paradigmas apresentados</h4><ul><li><b>Imperativo:</b> atribuições, sequência, repetição, seleção e abstração procedural.</li><li><b>Orientado a objetos:</b> objetos, classes, herança e troca de mensagens.</li><li><b>Funcional:</b> funções matemáticas e composição funcional.</li><li><b>Lógico:</b> declarativo, baseado em regras e mecanismo de inferência.</li></ul>`},
+ {title:'Implementação das linguagens',body:`<h4>Três estratégias</h4><ul><li><b>Compilação:</b> fonte → código de máquina → executável.</li><li><b>Interpretação:</b> tradução e execução acontecem durante a execução.</li><li><b>Híbrido:</b> fonte → código intermediário → interpretador/máquina virtual.</li></ul><p>Ambiente de programação não é sinônimo de linguagem: é o conjunto de ferramentas como editor, compilador, linker, bibliotecas e outros recursos.</p>`},
+ {title:'Sintaxe, identificadores e semântica',body:`<h4>Sintaxe</h4><p>A sintaxe descreve a forma do programa. Pode ser estudada em nível léxico, concreto e abstrato. Expressões regulares, autômatos finitos e gramáticas livres de contexto são métodos formais citados no material.</p><h4>Léxico</h4><p><b>Lexema</b> é a sequência de caracteres; <b>token</b> é a classe; <b>padrão</b> descreve a forma aceita.</p><h4>Semântica</h4><p>É o conjunto de significados. Pode ser descrita informal, semiformal ou formalmente. A análise pode ser estática (compilação) ou dinâmica (execução).</p>`},
+ {title:'Variáveis, escopo e tempo de vida',body:`<p>Uma variável é uma abstração de uma ou mais células de memória. O material associa a ela seis características: nome, endereço (<i>l-value</i>), valor (<i>r-value</i>), tipo, escopo e tempo de vida.</p><h4>Escopo</h4><ul><li><b>Estático:</b> definido pela posição da declaração no código.</li><li><b>Dinâmico:</b> definido conforme a ordem de chamadas dos subprogramas.</li></ul><p>Tempo de vida é o período em que a variável existe na memória.</p>`},
+ {title:'Sistema de tipos',body:`<p>Tipo de dado é um conjunto de valores e operações válidas; sistema de tipos define as associações entre tipo, valores e operações.</p><h4>Tipagem</h4><ul><li><b>Estática:</b> tipo definido na declaração e mantido durante a execução.</li><li><b>Dinâmica:</b> tipo definido em execução conforme o valor.</li><li><b>Força:</b> quanto mais rígidas as regras de operações entre tipos, mais forte é a tipagem.</li></ul><p>Conversões implícitas e coerção aparecem como fatores que podem enfraquecer a tipagem.</p>`},
+ {title:'Tipos compostos e ponteiros',body:`<h4>Tipos compostos</h4><p>Enumerações, registros/estruturas, vetores/matrizes e objetos são formados a partir de tipos básicos ou de outros compostos.</p><h4>Ponteiros</h4><p>Um ponteiro representa um endereço de memória. É explícito em linguagens como C e C++, e usado de forma implícita em outras.</p><h4>Alocação</h4><ul><li><b>Estática:</b> em compilação e com tamanho fixo.</li><li><b>Dinâmica:</b> em execução e com possibilidade de variar o tamanho.</li></ul>`},
+ {title:'Paradigma imperativo e programação estruturada',body:`<p>O paradigma imperativo nasceu ligado ao modelo de von Neumann. Variáveis, atribuições, sequência, condições e ramificações são centrais.</p><h4>Estruturado × não estruturado</h4><p>O modelo não estruturado usa <code>goto</code>/<code>jump</code>. O estruturado favorece seleção, repetição e subprogramas. O material relaciona Dijkstra à crítica ao uso excessivo de <code>goto</code>.</p>`},
+ {title:'Abstração procedural e subprogramas',body:`<p>Abstração é focar os aspectos essenciais e ignorar detalhes menos importantes. No imperativo, a abstração de processos aparece por meio de subprogramas.</p><h4>Subprogramas</h4><ul><li><b>Procedimentos:</b> não retornam valores.</li><li><b>Funções:</b> retornam valores.</li></ul><h4>Parâmetros</h4><p>Formal é o declarado no subprograma; real/argumento é o usado na chamada. O material trabalha passagem por valor, resultado, valor-resultado e referência.</p>`},
+ {title:'Orientação a objetos',body:`<p>A POO surge ligada à necessidade de melhorar reusabilidade, manutenibilidade e extensibilidade.</p><h4>Base</h4><ul><li>Tipos abstratos de dados / classes.</li><li>Herança.</li><li>Vinculação dinâmica / polimorfismo.</li></ul><h4>Encapsulamento</h4><p>A classe oculta detalhes internos e oferece métodos para manipulação. <code>public</code>, <code>private</code> e <code>protected</code> controlam acesso.</p><h4>Herança e polimorfismo</h4><p>Herança promove reutilização. Polimorfismo permite que uma referência de classe base acione implementações das classes derivadas.</p>`}
+];
+
+const QUESTIONS = [
+ {q:'Segundo o material, o que melhor define paradigma de programação?',options:['Uma IDE padronizada para uma linguagem','Um padrão para resolução de problemas e representação computacional da solução','Um compilador capaz de executar qualquer algoritmo','Uma forma de armazenar variáveis em memória'],answer:1,topic:'fundamentos'},
+ {q:'Qual paradigma é descrito como declarativo e baseado em regras?',options:['Imperativo','Orientado a objetos','Lógico','Estruturado'],answer:2,topic:'fundamentos'},
+ {q:'No paradigma funcional, o problema é modelado principalmente por:',options:['Tabelas de símbolos','Funções matemáticas e composição funcional','Objetos que trocam mensagens','Saltos condicionais com goto'],answer:1,topic:'fundamentos'},
+ {q:'Na compilação, o programa fonte é traduzido para:',options:['Código intermediário interpretado obrigatoriamente','Código de máquina de uma plataforma e normalmente salvo como executável','Somente tokens e lexemas','Uma árvore semântica executada pelo navegador'],answer:1,topic:'linguagens'},
+ {q:'O método híbrido descrito nas aulas usa:',options:['Somente interpretação direta do fonte','Somente código de máquina sem etapa intermediária','Código intermediário executado por um interpretador/máquina virtual','Apenas macros do pré-processador'],answer:2,topic:'linguagens'},
+ {q:'Ambiente de programação é:',options:['Sinônimo exato de linguagem de programação','Conjunto de ferramentas que auxilia o desenvolvimento','A gramática formal da linguagem','O paradigma predominante da linguagem'],answer:1,topic:'linguagens'},
+ {q:'Qual alternativa diferencia corretamente sintaxe e semântica?',options:['Sintaxe é significado e semântica é forma','Sintaxe é forma e semântica é significado','Ambas tratam somente de tokens','Semântica só existe em linguagens compiladas'],answer:1,topic:'sintaxe'},
+ {q:'Em análise léxica, token é:',options:['Uma sequência qualquer de bytes','A classificação dos lexemas que seguem determinado padrão','O endereço de uma variável','Uma gramática livre de contexto'],answer:1,topic:'sintaxe'},
+ {q:'Sintaxe abstrata considera:',options:['Somente pontuação e parênteses','Apenas informações essenciais, ignorando detalhes de representação','Somente identificadores reservados','A execução do programa em memória'],answer:1,topic:'sintaxe'},
+ {q:'Semântica estática é aquela que pode ser verificada:',options:['Somente após encerrar o programa','Em tempo de compilação','Apenas pelo usuário','Somente em linguagem natural'],answer:1,topic:'sintaxe'},
+ {q:'Uma variável é definida no material como:',options:['Um nome sem associação com memória','Uma abstração de uma ou mais células de memória identificada por um nome','Um valor constante vinculado para sempre','Um tipo de subprograma'],answer:1,topic:'sintaxe'},
+ {q:'O endereço de uma variável é chamado de:',options:['r-value','token','l-value','binding dinâmico'],answer:2,topic:'sintaxe'},
+ {q:'Escopo estático é determinado principalmente:',options:['Pela ordem das chamadas em tempo de execução','Pela posição da declaração no código','Pelo valor atual da variável','Pelo sistema operacional'],answer:1,topic:'sintaxe'},
+ {q:'Tipagem dinâmica significa que:',options:['O tipo é fixado na compilação','O tipo é definido em execução conforme o valor atribuído','A linguagem não possui tipos','Todos os tipos são convertidos em string'],answer:1,topic:'tipos'},
+ {q:'Quanto mais exigente a linguagem for com operações entre tipos diferentes:',options:['Mais fracamente tipada ela é','Mais fortemente tipada ela é','Mais interpretada ela é','Menos tipos ela possui'],answer:1,topic:'tipos'},
+ {q:'Qual é um tipo composto citado no material?',options:['Registrador','Enumeração','Opcode','Linker'],answer:1,topic:'tipos'},
+ {q:'Uma enumeração tem como objetivo principal:',options:['Liberar memória automaticamente','Restringir os valores que podem ser associados a uma variável','Executar métodos dinamicamente','Substituir ponteiros'],answer:1,topic:'tipos'},
+ {q:'Uma estrutura/registro reúne:',options:['Somente dados do mesmo tipo','Dados de diferentes tipos acessados por campos','Apenas métodos sem dados','Somente instruções Assembly'],answer:1,topic:'tipos'},
+ {q:'Um ponteiro representa:',options:['Um operador aritmético','Um endereço de memória','Uma classe abstrata','Um token reservado'],answer:1,topic:'tipos'},
+ {q:'Alocação dinâmica ocorre:',options:['Em tempo de compilação e tamanho fixo','Em tempo de execução e pode ter tamanho alterável','Somente em Java','Somente para variáveis globais'],answer:1,topic:'tipos'},
+ {q:'O paradigma imperativo está diretamente relacionado ao modelo:',options:['MVC','von Neumann','OSI','Lambda puro'],answer:1,topic:'imperativo'},
+ {q:'Qual recurso caracteriza a programação não estruturada nas aulas?',options:['Herança','Comando goto/jump','Interfaces','Composição funcional'],answer:1,topic:'imperativo'},
+ {q:'Abstração procedural permite ao programador:',options:['Ignorar a interface e focar apenas nos bytes','Focar no que a função calcula e na interface, ignorando detalhes internos','Eliminar todos os subprogramas','Usar somente variáveis globais'],answer:1,topic:'imperativo'},
+ {q:'Qual é uma vantagem citada da abstração procedural?',options:['Impossibilitar reuso','Reutilizar funções em diferentes pontos e programas','Aumentar obrigatoriamente o acoplamento','Eliminar bibliotecas'],answer:1,topic:'imperativo'},
+ {q:'Procedimentos e funções diferem porque:',options:['Procedimentos sempre são privados','Funções retornam valores e procedimentos não','Funções não aceitam parâmetros','Procedimentos só existem em C++'],answer:1,topic:'imperativo'},
+ {q:'Parâmetro formal é:',options:['O argumento usado na chamada','O parâmetro definido na declaração do subprograma','Uma variável global','Um valor constante'],answer:1,topic:'imperativo'},
+ {q:'Na passagem por valor:',options:['O parâmetro formal acessa diretamente o endereço original','O valor do parâmetro real é copiado para o formal','Não há entrada de dados','O parâmetro real é sempre alterado'],answer:1,topic:'imperativo'},
+ {q:'Na passagem por referência:',options:['Sempre há uma cópia completa do valor','O parâmetro fornece um caminho/endereço para o dado real','Não é possível alterar o dado original','Só funciona com strings'],answer:1,topic:'imperativo'},
+ {q:'A POO é apresentada como resposta à necessidade de melhorar:',options:['Somente velocidade de CPU','Reusabilidade, manutenibilidade e extensibilidade','Apenas consumo de memória','Somente sintaxe'],answer:1,topic:'oo'},
+ {q:'Uma classe é:',options:['Uma instância de um objeto','Uma declaração de tipo que encapsula dados e funções','Um endereço de memória','Um tipo de compilador'],answer:1,topic:'oo'},
+ {q:'Objeto é:',options:['Uma instância de uma classe','Uma palavra reservada','Uma gramática formal','Um compilador híbrido'],answer:0,topic:'oo'},
+ {q:'Em geral, o encapsulamento busca:',options:['Expor todos os atributos diretamente','Ocultar detalhes internos e controlar o acesso aos dados','Remover métodos','Substituir herança por goto'],answer:1,topic:'oo'},
+ {q:'No material, public significa:',options:['Acesso apenas pela própria classe','Acesso pela própria classe e subclasses','Acesso por qualquer classe','Sem acesso externo nem interno'],answer:2,topic:'oo'},
+ {q:'Herança simples significa que:',options:['Uma classe pode ter apenas uma superclasse','Uma classe não pode ter superclasse','Uma classe pode ter infinitas superclasses','A classe não herda métodos'],answer:0,topic:'oo'},
+ {q:'Polimorfismo dinâmico está associado a:',options:['Sobrecarga','Sobrescrita e ligação tardia','Gramática léxica','Compilação cruzada'],answer:1,topic:'oo'},
+ {q:'Uma classe abstrata:',options:['Pode ser instanciada normalmente','Não pode ser instanciada e pode possuir métodos abstratos','Não pode ter métodos','É igual a um struct em C'],answer:1,topic:'oo'}
+];
+
+const DOCUMENTS = [
+ ['Aula 01','Apresentação da disciplina','Aula01_Intro.pdf'],
+ ['Aula 02','Evolução das linguagens e paradigmas','Aula02_Evolução_LinguagensDeProgramacao.pdf'],
+ ['Aula 03','Implementação das linguagens','Aula03_Implementacao_LinguagensDeProgramacao.pdf'],
+ ['Aula 04','Sintaxe','Aula04_Sintaxe.pdf'],
+ ['Aula 05','Semântica','Aula05_Semantica.pdf'],
+ ['Aula 06','Sistema de tipos','Aula06_Tipos.pdf'],
+ ['Aula 07','Tipos compostos','Aula07_Tipos Compostos.pdf'],
+ ['Aula 08','Ponteiros','Aula08_Ponteiros.pdf'],
+ ['Aula 10','Paradigma imperativo · Parte 1','Aula09_ParadigmaImperativo1.pdf'],
+ ['Aula 11','Paradigma imperativo · Parte 2','Aula10_ParadigmaImperativo2.pdf'],
+ ['Aula 12','Paradigma imperativo · Parte 3','Aula11_ParadigmaImperativo3.pdf'],
+ ['Aula 13','Orientação a objetos · Parte 1','Aula12_ParadigmaOrientadoObjetos1.pdf'],
+ ['Aula 14','Orientação a objetos · Parte 2','Aula13_ParadigmaOrientadoObjetos2.pdf'],
+ ['Complementar','Dijkstra · Go To Statement Considered Harmful','Dijkstra68.pdf']
+];

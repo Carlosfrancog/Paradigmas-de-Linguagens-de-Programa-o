@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f2e8" />
+  <title>PLP · Estudos rápidos</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Início">
+      <span class="brand-mark">PLP</span>
+      <span><strong>Paradigmas</strong><small>estudos rápidos</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+    <nav id="nav">
+      <a href="#estudo">Estudo rápido</a>
+      <a href="#resumos">Resumos</a>
+      <a href="#simulado">Simulado</a>
+      <a href="#materiais">Materiais</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div>
+        <p class="eyebrow">Ciência da Computação · 2º semestre de 2026</p>
+        <h1>Revisão direta de<br><span>Paradigmas de Linguagens</span></h1>
+        <p class="hero-copy">Material organizado para revisar antes da aula, da atividade ou da prova. Sem feed infinito: conceito, exemplo, revisão e simulado.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#estudo">Começar revisão</a>
+          <a class="btn ghost" href="#simulado">Fazer simulado</a>
+        </div>
+      </div>
+      <aside class="paper-note">
+        <span>roteiro sugerido</span>
+        <ol>
+          <li>Leia os pontos-chave</li>
+          <li>Abra o resumo do tema</li>
+          <li>Faça 10 questões</li>
+          <li>Revise os erros</li>
+        </ol>
+      </aside>
+    </section>
+
+    <section class="section" id="estudo">
+      <div class="section-head">
+        <div><p class="eyebrow">Estudo rápido</p><h2>O que vale lembrar</h2></div>
+        <p>Blocos curtos para revisar os conceitos centrais das aulas.</p>
+      </div>
+      <div class="topic-filter" id="topicFilter"></div>
+      <div class="quick-grid" id="quickGrid"></div>
+    </section>
+
+    <section class="section alt" id="resumos">
+      <div class="section-head">
+        <div><p class="eyebrow">Resumos</p><h2>Matéria por blocos</h2></div>
+        <p>Abra um bloco e revise definição, diferenças e exemplos.</p>
+      </div>
+      <div class="accordion" id="summaryList"></div>
+    </section>
+
+    <section class="section" id="simulado">
+      <div class="section-head">
+        <div><p class="eyebrow">Simulado</p><h2>10 questões por tentativa</h2></div>
+        <p>As questões são sorteadas do banco e a pontuação fica salva neste navegador.</p>
+      </div>
+
+      <div class="quiz-shell">
+        <div class="quiz-start" id="quizStart">
+          <label for="studentName">Seu nome</label>
+          <div class="name-row">
+            <input id="studentName" maxlength="40" placeholder="Ex.: Carlos" autocomplete="name" />
+            <button class="btn primary" id="startQuiz">Iniciar</button>
+          </div>
+          <p class="muted">Não há login nem servidor. O nome serve só para separar o histórico local.</p>
+        </div>
+
+        <div class="quiz hidden" id="quizBox">
+          <div class="quiz-meta"><span id="quizStudent"></span><span id="quizProgress"></span></div>
+          <div id="questionArea"></div>
+          <div class="quiz-actions">
+            <button class="btn ghost" id="prevQuestion">Anterior</button>
+            <button class="btn primary" id="nextQuestion">Próxima</button>
+          </div>
+        </div>
+
+        <div class="result hidden" id="resultBox"></div>
+      </div>
+
+      <div class="history-card">
+        <div class="history-head"><h3>Histórico de tentativas</h3><button class="link-btn" id="clearHistory">limpar</button></div>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </section>
+
+    <section class="section alt" id="materiais">
+      <div class="section-head">
+        <div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
+        <p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
+      </div>
+      <div class="docs-grid" id="docsGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Portal de apoio aos estudos · Paradigmas de Linguagens de Programação</p>
+    <p class="muted">Conteúdo organizado a partir dos materiais fornecidos da disciplina.</p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
