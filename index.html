@@ -12,6 +12,7 @@
 <link href="v4.css" rel="stylesheet"/>
 <link href="v5.css" rel="stylesheet"/>
 <link href="lab-runner.css" rel="stylesheet"/>
+<link href="hotfix-contrast.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -110,7 +111,7 @@
 <div><p class="eyebrow">Materiais</p><h2>PDFs da disciplina</h2></div>
 <p>Os arquivos originais ficam anexados ao próprio site para consulta.</p>
 </div>
-<div class="docs-grid" id="docsGrid"></div><div class="reader" id="reader"><div class="reader-head"><div><p class="eyebrow">Biblioteca interativa</p><h3 id="readerTitle"></h3></div><div class="reader-modes"><button data-mode="original">Original</button><button class="active" data-mode="guided">Guiada</button></div></div><div class="reader-tools"><button class="link-btn" id="docPrev">← Aula anterior</button><a id="pdfNewTab" rel="noopener" target="_blank">Abrir PDF ↗</a><a id="pdfDownload">Baixar PDF ↓</a><button class="link-btn" id="docNext">Próxima aula →</button></div><div class="reader-layout"><iframe id="readerPdf" loading="lazy" title="PDF da aula"></iframe><aside class="reader-content" id="readerContent"></aside></div></div>
+<div class="docs-grid" id="docsGrid"></div><div class="reader" id="reader"><div class="reader-head"><div><p class="eyebrow">Biblioteca interativa</p><h3 id="readerTitle"></h3></div><div class="reader-modes"><button data-mode="original">Original</button><button class="active" data-mode="guided">Guiada</button></div></div><div class="reader-tools"><button class="link-btn" id="docPrev">← Aula anterior</button><a id="pdfNewTab" rel="noopener" target="_blank">Abrir PDF ↗</a><a id="pdfDownload">Baixar PDF ↓</a><button class="link-btn" id="docNext">Próxima aula →</button></div><div class="pdf-mobile-open"><p>Para ler os slides com zoom e navegação adequados, abra o PDF no visualizador do celular. Use os links “Ver página” na leitura guiada para ir direto ao slide correspondente.</p><a id="mobilePdfOpen" href="#" target="_blank" rel="noopener noreferrer">Abrir PDF original</a></div><div class="reader-layout"><iframe id="readerPdf" loading="lazy" title="PDF da aula"></iframe><aside class="reader-content" id="readerContent"></aside></div></div>
 </section>
 </main><div class="drawer-backdrop" id="drawerBackdrop"></div><aside aria-hidden="true" aria-label="Estudo expandido" class="study-drawer" id="studyDrawer" role="dialog"><div class="drawer-top"><span class="tag" id="drawerTag"></span><button aria-label="Fechar estudo" id="drawerClose">✕</button></div><small id="drawerCounter"></small><h2 id="drawerTitle"></h2><p id="drawerText"></p><div class="drawer-highlight"><strong>Grave isto</strong><p id="drawerKey"></p></div><div id="drawerExtra"></div><div class="drawer-navigation"><button id="drawerPrev">← Anterior</button><button id="drawerNext">Próximo →</button></div></aside>
 
@@ -127,5 +128,7 @@
 <script defer="" src="lab-bank.js"></script>
 <script defer="" src="workshop.js"></script>
 
+<link rel="stylesheet" href="pdf-mobile-fix.css" />
+<script defer src="pdf-mobile-fix.js"></script>
 </body>
 </html>
