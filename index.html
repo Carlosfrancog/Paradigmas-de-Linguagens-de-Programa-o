@@ -9,6 +9,7 @@
   <title>PLP · Estudos rápidos</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="v4.css" />
+  <link rel="stylesheet" href="v5.css" />
 </head>
 <body>
   <header class="topbar">
@@ -21,23 +22,23 @@
       <a href="#estudo">Estudo rápido</a>
       <a href="#resumos">Resumos</a><a href="#reader">Leitura guiada</a>
       <a href="#simulado">Simulado</a><a href="#progresso">Evolução</a><a href="#laboratorio">Laboratório</a>
-      <a href="#materiais">Materiais</a><a href="#flashcards">Flashcards</a><a href="#comunidade">Comunidade</a>
+      <a href="#materiais">Materiais</a><a href="#wallet">Wallet</a><a href="#flashcards">Flashcards</a><a href="#comunidade">Comunidade</a>
     </nav>
   </header>
 
   <main>
     <section class="hero" id="inicio">
       <div>
-        <p class="eyebrow">// PLP SYSTEM · CIÊNCIA DA COMPUTAÇÃO · 2026</p>
-        <h1>Domine a lógica.<br><span>Reescreva as regras.</span></h1>
-        <p class="hero-copy">Agora com diagnóstico dos seus erros, acompanhamento da evolução, laboratório interativo e leitura guiada. Conceito, prática e revisão no mesmo lugar.</p>
+        <p class="eyebrow">CIÊNCIA DA COMPUTAÇÃO / MATERIAL DE ESTUDO</p>
+        <h1>Paradigmas de<br><span>programação.</span></h1>
+        <p class="hero-copy">Um espaço para estudar as aulas, testar conceitos e acompanhar o que você aprendeu. Material da disciplina, exercícios e simulados reunidos aqui.</p>
         <div class="hero-actions">
           <a class="btn primary" href="#estudo">Começar revisão</a>
           <a class="btn ghost" href="#simulado">Fazer simulado</a>
         </div>
       </div>
       <aside class="paper-note">
-        <span>roteiro sugerido</span>
+        <span>Para começar</span>
         <ol>
           <li>Leia os pontos-chave</li>
           <li>Abra o resumo do tema</li>
@@ -106,8 +107,9 @@
 </section>
 <section class="section" id="laboratorio">
 <div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios interativos de fluxo, escopo, referência e objetos — sem compilador remoto.</p></div>
-<div class="v4-unlocks" id="v4Unlocks"></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre id="labCode" class="v3-code"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Verificar resposta</button><div id="labFeedback" aria-live="polite"></div></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Os exemplos são demonstrativos; não executamos código digitado pelo usuário.</p></aside></div></div>
+<div class="v4-unlocks" id="v4Unlocks"></div><div class="wallet-strip"><div><span class="eyebrow">CARTEIRA / PLP COINS</span><h3>Seu progresso vale coins.</h3><p>Entre com uma conta para ganhar coins quando acertar uma questão validada online. Ranking público só exibe nome e saldo.</p></div><a class="btn primary" href="#wallet">Abrir wallet</a></div><div class="lab-queue"><label for="labModule">Módulo</label><select id="labModule"></select><span id="labQuestionCount"></span></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre id="labCode" class="v3-code"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Confirmar resposta</button><button class="btn ghost hidden" id="labNext" type="button">Próxima questão →</button><div id="labFeedback" aria-live="polite"></div></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Os exemplos são demonstrativos; não executamos código digitado pelo usuário.</p></aside></div></div>
 </section>
+    <section class="section" id="wallet"><div class="section-head"><div><p class="eyebrow">PLP COINS</p><h2>Wallet e ranking</h2></div><p>Coins por acertos validados. O ranking mostra apenas o nome público da conta e o saldo.</p></div><div class="wallet-layout"><div class="v4-panel"><h3>Acessar carteira</h3><form id="walletForm"><label>Nome de usuário<input id="walletName" required maxlength="32" minlength="3" autocomplete="username" placeholder="Seu nome de usuário" /></label><label>Senha<input id="walletPass" type="password" minlength="10" maxlength="128" autocomplete="current-password" required placeholder="Pelo menos 10 caracteres" /></label><div class="wallet-buttons"><button class="btn primary" type="submit" data-mode="login">Entrar</button><button class="btn ghost" type="button" id="walletRegister">Criar wallet</button><button class="btn ghost" type="button" id="walletLogout">Sair</button></div></form><div id="walletState" aria-live="polite" class="wallet-state"></div></div><div class="v4-panel"><h3>Ranking de coins</h3><p class="muted">Classificação global quando a API estiver configurada.</p><div id="walletRanking"></div></div></div></section>
     <section class="section" id="flashcards">
       <div class="section-head"><div><p class="eyebrow">Recuperação ativa</p><h2>Flashcards espaçados</h2></div><p>Revise agora, marque a dificuldade e receba o próximo cartão na data certa.</p></div>
       <div class="v4-flash-zone"><div class="v4-flash-top"><span id="flashDue">Carregando cartões</span><select id="flashTopic" aria-label="Filtrar flashcards por assunto"></select></div>
@@ -138,5 +140,7 @@
   <script defer src="v3-content.js"></script>
   <script defer src="v3.js"></script>
   <script defer src="v4.js"></script>
+  <script defer src="lab-bank.js"></script>
+  <script defer src="v5.js"></script>
 </body>
 </html>

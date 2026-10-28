@@ -55,3 +55,45 @@ A classificação de dificuldade é heurística e editorial. Os PDFs permanecem 
 No GitHub, acesse **Settings → Rules → Rulesets → New branch ruleset** (ou **Branches → Add branch protection rule**, se disponível). Alvo: `main`. Exija Pull Request, pelo menos 1 aprovação de mantenedor, aprovação do CODEOWNERS quando disponível, resolução de conversas e bloqueio de force push/deleção. Restrinja bypasses e deixe GitHub Actions com permissões padrão de leitura. Antes de exigir checks, crie e valide um check de PR; o workflow de publicação roda somente após merge em `main`.
 
 Em repositórios públicos pessoais, algumas restrições podem depender das funcionalidades disponíveis no plano GitHub. Confirme o que sua conta permite antes de marcar opções.
+
+## V5 — Rotas, oficina e wallet
+
+O projeto mantém o histórico da V4. A navegação agora usa rotas estáticas via *hash* (`#inicio`, `#estudo`, `#resumos`, `#materiais`, `#simulado`, `#progresso`, `#laboratorio`, `#wallet`, `#flashcards`, `#comunidade`). São rotas client-side compatíveis com Pages e recarregamento direto, sem arquivos HTML duplicados.
+
+A oficina possui **8 módulos, 112 variações parametrizadas por módulo, 896 variações no total**. Cada módulo usa 8 famílias de exercícios e 14 variações numéricas (não são 896 questões manuscritas e independentes). Respostas locais são registradas em `localStorage`, não repetem no mesmo navegador e não rendem moedas. As **questões com coins** são emitidas pelo Worker e corrigidas no backend. A API oferece 110 variantes por módulo, geradas de 1 família por módulo: não confunda as quantidades do modo local com as do modo remunerado. Uma questão respondida não pode ser pontuada novamente, mesmo se tiver sido errada. Recompensa: 5 coins por acerto.
+
+A wallet NÃO usa um JSON editável para armazenar senhas e coins. Isso seria inseguro. O D1 guarda PBKDF2-SHA256 + salt para senhas, sessões representadas por hash do token e saldo atualizado exclusivamente após validação da resposta no servidor. O JSON público em `GET /api/wallet/ranking` mostra somente nome e coins. O token temporário fica em `sessionStorage`; não faça commit de tokens ou dados de produção. A arquitetura não usa JWE: ele não substitui hash de senha, e não é necessário para proteger senhas em D1.
+
+### Configurar carteira e placar global
+
+Use as instruções de [`api-worker/README.md`](api-worker/README.md). Quando já tiver implantado a API da V4, execute a migração das **novas tabelas** de wallet, sem apagar as anteriores. Faça backup do D1 antes de aplicar mudanças. No diretório `api-worker`:
+
+```bash
+npx wrangler d1 execute plp-estudos --remote --file=wallet-migration.sql
+npx wrangler deploy
+```
+
+O `schema.sql` completo é destinado a novas instalações. O arquivo `wallet-migration.sql` contém apenas tabelas da V5. Atualize `config.json` com a URL HTTPS do Worker. Sem API o modo local e os simulados continuam disponíveis; login, coins e ranking global não funcionam.
+
+### Segurança e revisão de PR
+
+- A base de questões da oficina no navegador é conteúdo educacional público; não coloque credenciais ou segredos nela.
+- O Worker nunca aceita saldo ou quantidade de moedas enviados pelo cliente.
+- Dados da carteira são pessoais: não exponha hashes, sessões nem listas de contas via endpoint público.
+- O endpoint de login implementa limite simples por IP, **mas é recomendável adicionar Cloudflare Turnstile e rate limiting na borda antes de crescer**.
+- Para uma competição com dinheiro ou prêmios, inclua auditoria transacional, autenticação mais robusta, remoção de contas e proteção contra múltiplas contas. O sistema atual é recreativo.
+- PRs que mudem regras de coins, autenticação, migrações D1 ou CI devem ter revisão humana e teste em ambiente de homologação.
+
+### Publicar a V5 por PR
+
+```powershell
+git switch main
+git pull --ff-only origin main
+git switch -c feat/wallet-oficina-v5
+# copie os arquivos V5 para o repositório preservando .git
+git add .
+git commit -m "feat: rotas, oficina ampliada, wallet e ajustes mobile"
+git push -u origin feat/wallet-oficina-v5
+```
+
+Abra um Pull Request de `feat/wallet-oficina-v5` para `main`. Só faça merge após conferir a responsividade e o Worker; o GitHub Actions deve publicar apenas os ativos especificados em `dist`.

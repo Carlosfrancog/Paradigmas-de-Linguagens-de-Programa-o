@@ -1,0 +1,25 @@
+/* V5: responsive route-based learning environment */
+:root{color-scheme:dark;--ink:#edf4ff;--muted:#bdcce0;--line:#34445c;--cream:#131d31}
+body{font-family:Inter,system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.6}
+.hero{min-height:420px;padding-block:64px;background:linear-gradient(120deg,#0c1b27cc,#1b1734bb)}
+.hero h1{font-size:clamp(39px,6vw,65px);letter-spacing:-.045em;line-height:1.11}.hero h1 span{background:none!important;-webkit-text-fill-color:var(--accent);color:var(--accent)}
+.hero .eyebrow{letter-spacing:.1em}.paper-note{max-width:410px;padding:25px}.paper-note:before{display:none}.paper-note ol{font-size:15px}
+.quick-card:before{display:none}.quick-card{border-radius:13px;transform:none!important}.quick-card:hover{box-shadow:0 10px 30px #0006;border-color:var(--accent)}
+.drawer-highlight,.guide-note,.v3-feedback.good,.v3-feedback.bad,.v3-takeaway{background:#172c39!important;color:#f0fbff!important;border-color:var(--accent)!important}
+.drawer-highlight *,.guide-note *,.v3-feedback *,.v3-takeaway *{color:#f0fbff!important;opacity:1!important}
+.v3-lab-option{background:#111c2d;color:#edf4ff;border-color:#3c526d;min-height:50px;line-height:1.45}.v3-lab-option:has(input:checked){background:#163b42;color:#f0ffff;border-color:#38e6cd}
+.v3-lab-aside{color:var(--muted)}.v3-lab-aside span{color:#f6fcff}
+.v3-lab-tabs{display:none}.v3-lab-content{grid-template-columns:minmax(0,1fr) 230px;gap:20px}
+.v3-code{white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;background:#081223;color:#e2fff5;font-size:13px}
+.v3-stat span,.v3-progress-row span,.v3-chapter small{color:var(--muted)}.v3-progress-track{background:#2b3b53}
+.v3-chapter{background:#121f35;color:var(--ink)}.v3-chapter p{color:var(--ink)}
+.v3-chapter-nav{background:#101e33}.v3-chapter-tab{background:#192640;color:#dcecff;border-color:#42536f}
+.v3-chapter-tab:hover,.v3-chapter-tab.active{background:var(--accent);color:#06121e}
+.wallet-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.wallet-layout form{display:grid;gap:12px}.wallet-layout label{display:grid;gap:6px;color:var(--muted);font-weight:600}.wallet-layout input,.lab-queue select{background:#0b1427;color:var(--ink);border:1px solid #53647e;border-radius:10px;padding:12px;min-height:48px;width:100%}.wallet-buttons{display:flex;flex-wrap:wrap;gap:8px}.wallet-buttons .btn{padding:11px 13px}.wallet-state{margin-top:16px;color:var(--ink);min-height:26px}.rank-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #35445b;padding:13px 0}.rank-item strong{color:var(--accent)}
+.wallet-strip{display:flex;justify-content:space-between;align-items:center;gap:16px;background:#142437;padding:21px;border:1px solid #345068;border-radius:14px;margin:0 0 17px}.wallet-strip h3{margin:4px 0 5px;font-size:20px}.wallet-strip p{margin:0;color:var(--muted)}
+.lab-queue{display:flex;align-items:center;flex-wrap:wrap;gap:13px;margin:12px 0}.lab-queue label{font-weight:700}.lab-queue select{width:min(100%,320px)}.lab-queue span{color:var(--muted);font-size:13px}
+#labNext:not(.hidden){margin-left:8px}.route-hidden{display:none!important}
+.topbar nav a[aria-current=page]{color:var(--accent);border-bottom:2px solid var(--accent)}
+.section:target{scroll-margin-top:80px}.study-drawer{padding-top:max(28px,env(safe-area-inset-top))}.drawer-top button{color:var(--ink);border-color:#64748b}
+@media(max-width:850px){.hero{padding:44px 20px}.paper-note{max-width:none}.wallet-layout{grid-template-columns:1fr}.v3-lab-content{grid-template-columns:1fr}.v3-lab-aside{border-left:none;border-top:1px solid var(--line);padding:15px 0 0}.section,.section.alt{padding:32px 16px}.section-head{display:block}.section-head h2{font-size:clamp(27px,7vw,36px)}.section-head>p{max-width:none}.wallet-strip{display:block}.wallet-strip .btn{margin-top:14px}.quiz-actions{position:sticky;bottom:0;background:#121b2c;padding:9px 0;z-index:5}.v3-lab-content{padding:16px}.v3-code{padding:15px}}
+@media(max-width:520px){.topbar{padding:0 12px}.hero h1{font-size:39px}.hero-copy{line-height:1.7}.paper-note ol{padding-left:20px}.wallet-buttons button{flex:1}.v4-feedback-toast{top:76px}.v3-stats{grid-template-columns:1fr 1fr}.study-drawer{width:100vw}.drawer-highlight{padding:17px}.quick-card{min-height:145px}#labNext:not(.hidden){margin:10px 0 0;width:100%}#labCheck{width:100%}}

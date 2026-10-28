@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/material
-          cp index.html styles.css v4.css app.js data.js v3.js v3-content.js v4.js favicon.svg manifest.webmanifest config.json guided.json guided-v3.json dist/
+          cp index.html styles.css v4.css v5.css app.js data.js v3.js v3-content.js v4.js v5.js lab-bank.js favicon.svg manifest.webmanifest config.json guided.json guided-v3.json dist/
           cp material/*.pdf dist/material/
           test -s dist/index.html
           test "$(find dist/material -maxdepth 1 -name '*.pdf' | wc -l)" -eq 14
