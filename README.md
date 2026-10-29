@@ -57,3 +57,7 @@ O portal oferece instalação quando o navegador suportar o prompt nativo. Em ou
 O editor remoto de código foi removido da edição Study. A Oficina corrige exercícios e mostra explicações antes da próxima questão. Os exercícios ficam em pausa por uma hora por navegador depois de respondidos.
 
 Para instalar no celular, use o botão do relógio. Navegadores compatíveis podem oferecer a instalação nativa; em outros casos, o painel mostra o caminho para adicionar o site à tela inicial. A instalação depende da confirmação do visitante.
+
+
+### Progressão da Oficina
+As questões acertadas deixam o sorteio. As erradas retornam após três outras respostas em qualquer módulo; o progresso é local ao navegador. Em **Zerar progresso da Oficina**, todas as questões, skins e conquistas são reiniciadas após confirmação.

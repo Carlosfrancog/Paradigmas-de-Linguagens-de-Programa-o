@@ -32,3 +32,5 @@
 .skin-holo{background:linear-gradient(135deg,#51256b,#f18ade,#32e5d2)}
 .skin-terminal{background:repeating-linear-gradient(0deg,#083b11 0 2px,#07150c 2px 6px)}
 .skin-noir{background:linear-gradient(145deg,#080a0e,#555d69)}
+
+.lab-queue{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.lab-queue #labQuestionCount{margin-right:auto}.lab-reset{font-size:12px;min-height:38px;white-space:normal}@media(max-width:640px){.lab-queue>*{width:100%}.lab-reset{width:100%}}
