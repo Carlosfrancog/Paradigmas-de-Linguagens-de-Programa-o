@@ -27,6 +27,8 @@ const skins=[
 ];
 let chosen=localStorage.getItem('plp-skin-v4')||'neon';
 const unlockKey='plp-unlocks-v4';
+const seenUnlockToastKey='plp-skin-toast-seen-v7';
+let previewTimer=null;
 function progressCount(){
  // Conquistas anteriores permanecem válidas, mesmo se o cooldown expirar.
  const old=store(unlockKey,[]);
@@ -35,6 +37,40 @@ function progressCount(){
  const legacy=Number(localStorage.getItem('plp-lab-ever-completed')||0);
  return Math.max(Array.isArray(old)?old.length:0,Array.isArray(correct)?new Set(correct).size:0,Array.isArray(completed)?new Set(completed).size:0,Number.isFinite(legacy)?legacy:0);
 }
+function ensureThemePreview(){
+ const stage=q('#v4ThemePreview');
+ if(!stage)return;
+ const unlockedSkins=skins.filter(s=>progressCount()>=s.required);
+ if(!unlockedSkins.length)return;
+ let idx=Math.max(0,unlockedSkins.findIndex(s=>s.id===chosen));
+ const render=()=>{
+  const skin=unlockedSkins[idx%unlockedSkins.length];
+  stage.innerHTML=`<div class="v4-theme-stage theme-${escapeHTML(skin.id)}"><div class="v4-theme-mini top"></div><div class="v4-theme-mini body"><span></span><span></span><span></span></div><div class="v4-theme-meta"><strong>${escapeHTML(skin.name)}</strong><small>${escapeHTML(skin.desc)}</small></div></div>`;
+ };
+ render();
+ clearInterval(previewTimer);
+ previewTimer=setInterval(()=>{idx=(idx+1)%unlockedSkins.length;render();},1800);
+}
+function maybeCelebrateUnlock(progress){
+ const unlocked=skins.filter(s=>progress>=s.required).map(s=>s.id);
+ const seen=store(seenUnlockToastKey,[]);
+ const fresh=unlocked.filter(id=>!seen.includes(id));
+ if(!fresh.length)return;
+ set(seenUnlockToastKey,[...new Set([...seen,...fresh])]);
+ const latest=skins.find(s=>s.id===fresh[fresh.length-1]);
+ let toast=q('#v4UnlockToast');
+ if(!toast){
+  toast=document.createElement('div');
+  toast.id='v4UnlockToast';
+  toast.className='v4-unlock-toast';
+  document.body.appendChild(toast);
+ }
+ toast.innerHTML=`<button type="button" class="v4-toast-close" aria-label="Fechar">×</button><div class="v4-toast-stage theme-${escapeHTML(latest.id)}"><div class="v4-theme-mini top"></div><div class="v4-theme-mini body"><span></span><span></span><span></span></div></div><div><span class="v4-toast-top">// DESBLOQUEADO</span><strong>${escapeHTML(latest.name)}</strong><p>Novo visual liberado na coleção de temas. Toque para abrir os temas.</p></div>`;
+ toast.hidden=false;
+ toast.querySelector('.v4-toast-close').onclick=e=>{e.stopPropagation();toast.hidden=true};
+ toast.onclick=()=>{location.hash='#flashcards';q('#v4Unlocks')?.scrollIntoView({behavior:'smooth',block:'start'});toast.hidden=true;};
+ setTimeout(()=>{if(toast)toast.hidden=true;},6000);
+}
 function paintSkins(){
  const progress=progressCount();
  const old=store(unlockKey,[]);
@@ -42,8 +78,10 @@ function paintSkins(){
  const unlocked=[...new Set([...previous,...Array.from({length:Math.min(progress,200)},(_,i)=>i)])].sort((a,b)=>a-b);
  if(unlocked.length!==previous.length)set(unlockKey,unlocked);
  if(!q('#v4Unlocks'))return;
- q('#v4Unlocks').innerHTML=`<div><p class="eyebrow">Oficina</p><h3>Temas visuais</h3><p class="muted">Resolva questões na Oficina para liberar novas aparências. O progresso não expira com o cooldown das perguntas.</p><span class="v4-count">${progress} questões concluídas</span></div><div class="v4-skins">${skins.map(s=>{const locked=progress<s.required;return `<button type="button" class="v4-skin ${chosen===s.id?'active':''}" data-skin="${s.id}" ${locked?'disabled':''}><span class="v4-skin-preview skin-${s.id}"></span><strong>${escapeHTML(s.name)}</strong><small>${locked?'Bloqueada · '+escapeHTML(s.desc):chosen===s.id?'✓ Ativa':'Aplicar tema'}</small></button>`}).join('')}</div>`;
+ q('#v4Unlocks').innerHTML=`<div><p class="eyebrow">Oficina</p><h3>Temas visuais</h3><p class="muted">Resolva questões na Oficina para liberar novas aparências. O progresso não expira com o cooldown das perguntas.</p><span class="v4-count">${progress} questões concluídas</span><div id="v4ThemePreview" class="v4-theme-preview"></div></div><div class="v4-skins">${skins.map(s=>{const locked=progress<s.required;return `<button type="button" class="v4-skin ${chosen===s.id?'active':''}" data-skin="${s.id}" ${locked?'disabled':''}><span class="v4-skin-preview skin-${s.id}"></span><strong>${escapeHTML(s.name)}</strong><small>${locked?'Bloqueada · '+escapeHTML(s.desc):chosen===s.id?'✓ Ativa':'Aplicar tema'}</small></button>`}).join('')}</div>`;
  all('[data-skin]').forEach(b=>b.onclick=()=>{chosen=b.dataset.skin;localStorage.setItem('plp-skin-v4',chosen);applySkin();paintSkins()});
+ ensureThemePreview();
+ maybeCelebrateUnlock(progress);
 }
 function applySkin(){document.documentElement.dataset.skin=chosen;const theme=document.querySelector('meta[name=theme-color]');if(theme){const colors={neon:'#080b19',matrix:'#04160e',sunset:'#1c1023',ice:'#071627',amber:'#17110a',vapor:'#1e1239',mono:'#0d1016',aurora:'#071d23',crimson:'#230d16',paper:'#f5f0e5',cobalt:'#080f2a',holo:'#161025',terminal:'#060f09',noir:'#08090c'};theme.content=colors[chosen]||colors.neon;}}
 applySkin();paintSkins();
