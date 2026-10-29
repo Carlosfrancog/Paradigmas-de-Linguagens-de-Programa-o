@@ -27,3 +27,35 @@
 #laboratorio .v3-lab-aside{border-color:#3b526c!important;}
 #laboratorio .v3-code{max-width:100%;white-space:pre;overflow:auto;}
 @media(max-width:600px){#laboratorio .v3-lab-content{padding:16px!important;min-width:0;}#simulado .quiz-shell{padding:16px!important;min-width:0;}#simulado .option{min-height:52px;overflow-wrap:anywhere;}#laboratorio #labModule{width:100%;}}
+
+/* Revisão do simulado: contraste consistente em todas as skins (inclusive tema claro). */
+#simulado .review-list .review-item,
+#progresso .review-list .review-item,
+.review-list .review-item {
+  background:#11233a!important;
+  color:#f3f8ff!important;
+  border:1px solid #46617e!important;
+  border-left:4px solid #45d6b3!important;
+  opacity:1!important;
+}
+.review-list .review-item.incorrect {
+  background:#2a1e34!important;
+  border-left-color:#ffad8b!important;
+}
+.review-list .review-item h4,
+.review-list .review-item p,
+.review-list .review-item b,
+.review-list .review-item strong,
+.review-list .review-item .review-top,
+.review-list .review-item .review-top span,
+.review-list .review-item .why,
+.review-list .review-item .why b,
+.review-list .review-item .why span {
+  color:#f3f8ff!important;
+  opacity:1!important;
+}
+.review-list .review-item .why {border-top:1px solid #587089!important;}
+.review-list .review-item .review-top .ok {color:#8cf5c2!important;}
+.review-list .review-item .review-top .bad {color:#ffbdad!important;}
+.review-list .review-item .why span {color:#ffcebd!important;}
+@media(max-width:600px){.review-list .review-item {padding:16px!important;overflow-wrap:anywhere;}}
