@@ -33,10 +33,36 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/material
-          cp index.html styles.css v4.css v5.css app.js data.js v3.js v3-content.js v4.js workshop.js lab-bank.js hotfix-contrast.css pdf-mobile-fix.css pdf-mobile-fix.js exam-clock.css exam-clock.js skins-extra.css study-polish.css sw.js icon-192.png icon-512.png icon-maskable.png favicon.svg manifest.webmanifest guided.json guided-v3.json dist/
-          cp material/*.pdf dist/material/
+          required=(
+            index.html styles.css v4.css v5.css
+            app.js data.js v3.js v3-content.js v4.js
+            workshop.js lab-bank.js hotfix-contrast.css
+            pdf-mobile-fix.css pdf-mobile-fix.js
+            exam-clock.css exam-clock.js skins-extra.css
+            study-polish.css sw.js icon-192.png icon-512.png
+            icon-maskable.png favicon.svg manifest.webmanifest
+            guided.json guided-v3.json
+          )
+          missing=0
+          for file in "${required[@]}"; do
+            if [[ ! -s "$file" ]]; then
+              echo "::error::Arquivo obrigatório ausente ou vazio: $file"
+              missing=1
+            fi
+          done
+          if (( missing )); then
+            exit 1
+          fi
+          cp -- "${required[@]}" dist/
+          shopt -s nullglob
+          pdfs=(material/*.pdf)
+          if (( ${#pdfs[@]} != 14 )); then
+            echo "::error::Esperados 14 PDFs em material/, encontrados ${#pdfs[@]}."
+            exit 1
+          fi
+          cp -- "${pdfs[@]}" dist/material/
           test -s dist/index.html
-          test "$(find dist/material -maxdepth 1 -name '*.pdf' | wc -l)" -eq 14
+          echo "Arquivos públicos preparados com sucesso."
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload public files only
