@@ -48,3 +48,12 @@ O botão flutuante de relógio permite informar data e horário da prova, acompa
 ### Contagem regressiva da prova
 
 O relógio flutuante mostra a contagem regressiva até **29/10/2026, 19h10 (horário de São Paulo, UTC−03:00)**. Ao tocar no botão, também são exibidas orientações para adicionar o site à tela inicial do celular. A função não requer cadastro.
+
+### PWA e skins
+O portal oferece instalação quando o navegador suportar o prompt nativo. Em outros casos, o painel do relógio explica como adicionar o atalho à tela inicial. Nenhum serviço pode instalar um PWA sem consentimento do usuário. Os temas visuais são liberados por questões concluídas na Oficina.
+
+## Oficina e instalação
+
+O editor remoto de código foi removido da edição Study. A Oficina corrige exercícios e mostra explicações antes da próxima questão. Os exercícios ficam em pausa por uma hora por navegador depois de respondidos.
+
+Para instalar no celular, use o botão do relógio. Navegadores compatíveis podem oferecer a instalação nativa; em outros casos, o painel mostra o caminho para adicionar o site à tela inicial. A instalação depende da confirmação do visitante.

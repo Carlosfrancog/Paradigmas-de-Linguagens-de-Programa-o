@@ -11,10 +11,11 @@
 <link href="styles.css" rel="stylesheet"/>
 <link href="v4.css" rel="stylesheet"/>
 <link href="v5.css" rel="stylesheet"/>
-<link href="lab-runner.css" rel="stylesheet"/>
+
 <link href="hotfix-contrast.css" rel="stylesheet"/>
 
 <link rel="stylesheet" href="exam-clock.css"/>
+<link rel="stylesheet" href="skins-extra.css"/><link rel="stylesheet" href="study-polish.css"/>
 </head>
 <body>
 <header class="topbar">
@@ -97,8 +98,8 @@
 <div class="v3-panel v3-review"><div><h3>Revisão inteligente</h3><p>Refaça perguntas que você errou, priorizando os assuntos com pior aproveitamento.</p><p class="muted">O diagnóstico usa somente tentativas com respostas completas salvas neste navegador.</p></div><button class="btn primary" id="startReview">Treinar meus erros</button></div>
 </section>
 <section class="section" id="laboratorio">
-<div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios interativos de fluxo, escopo, referência e objetos — agora com execução opcional de exemplos C após a correção.</p></div>
-<div class="v4-unlocks" id="v4Unlocks"></div><div class="lab-queue"><label for="labModule">Módulo</label><select id="labModule"></select><span id="labQuestionCount"></span></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><pre class="v3-code" id="labCode"></pre><label class="v3-label" for="labAnswer">Qual é a saída ou a conclusão correta?</label><div id="labOptions"></div><button class="btn primary" id="labCheck">Confirmar resposta</button><button class="btn ghost hidden" id="labNext" type="button">Próxima questão →</button><div aria-live="polite" id="labFeedback"></div><section class="lab-runner hidden" id="labRunner" aria-label="Executar e editar código"><div class="lab-runner-head"><h4>Experimentar o código</h4><span id="labRunLanguage"></span></div><p>Depois de conferir sua resposta, altere o exemplo e veja o comportamento do programa.</p><label for="labEditor">Código</label><textarea id="labEditor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea><div class="lab-runner-actions"><button type="button" class="btn primary" id="labRunBtn">▶ Executar</button><button type="button" class="btn ghost" id="labResetCode">Restaurar exemplo</button></div><label for="labRunOutput">Resultado</label><pre id="labRunOutput" role="status" aria-live="polite"></pre></section></div><aside class="v3-lab-aside"><span>Como estudar aqui</span><p>Leia o código antes de executar mentalmente. Marque a opção e veja o passo a passo do resultado.</p><p class="muted">Alguns exemplos são conceituais. Código C pode ser executado em ambiente remoto isolado quando o serviço estiver configurado.</p></aside></div></div>
+<div class="section-head"><div><p class="eyebrow">Aprenda fazendo</p><h2>Laboratório de código</h2></div><p>Exercícios rápidos de fluxo, escopo, ponteiros e objetos. Responda, veja a explicação e avance.</p></div>
+<div class="v4-unlocks" id="v4Unlocks"></div><div class="lab-queue"><label for="labModule">Módulo</label><select id="labModule"></select><span id="labQuestionCount"></span></div><div class="v3-lab"><div class="v3-lab-tabs" id="labTabs"></div><div class="v3-lab-content"><div><p class="eyebrow" id="labTopic"></p><h3 id="labTitle"></h3><p id="labIntro"></p><div class="lab-example"><span class="lab-section-label">TRECHO PARA ANALISAR</span><pre class="v3-code" id="labCode"></pre></div><p class="lab-section-label">ESCOLHA UMA ALTERNATIVA</p><div id="labOptions"></div><button class="btn primary" id="labCheck">Confirmar resposta</button><button class="btn ghost hidden" id="labNext" type="button">Próxima questão →</button><div aria-live="polite" id="labFeedback"></div></div><aside class="v3-lab-aside"><span>Como funciona</span><p>Escolha um módulo, leia o enunciado e observe o trecho de código.</p><p>Selecione uma alternativa e confirme. Você verá a resposta explicada antes de passar à próxima questão.</p></aside></div></div>
 </section>
 
 <section class="section" id="flashcards">
