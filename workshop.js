@@ -6,9 +6,6 @@ const labError=(message)=>{const area=document.querySelector('#labFeedback');if(
 const KEY='plp-workshop-done-v5';
 const COOLDOWN_MS=60*60*1000; // 1 hora desde a resposta de cada pergunta
 let cooldownInterval=null;
-const EXECUTOR_CONFIG='executor-config.json';
-let executorBase='';
-fetch(EXECUTOR_CONFIG,{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(c=>{executorBase=typeof c.baseUrl==='string'?c.baseUrl.replace(/\/$/,''):''}).catch(()=>{});
 
 let done;try{done=JSON.parse(localStorage.getItem(KEY)||'{}');if(!done||typeof done!=='object'||Array.isArray(done))done={}}catch{done={}}
 // Mantém os registros anteriores (timestamps). Dados legados sem data válida são descartados.
@@ -38,11 +35,6 @@ function updateCooldownStatus(){
  if(earliest<=Date.now())chooseNext();
 }
 let currentModule='imperativo',question=null,answered=false;
-let execution=null;
-const isRunnable=q=>q&&['imperativo','ponteiros','escopo','tipos','subprogramas','sintaxe'].includes(currentModule)&&!/(\bclass\s|\binterface\s|\bextends\b|\bimplements\b|\bdef\s|\bprint\s*\(|\bSystem\.|\bnew\s|\babstract\s|\bvoid\s+\w+\s*\(|\bint\s+\w+\s*\([^;]*\)\s*\{)/.test(q.code)&&!q.code.includes('...');
-const codeFor=q=>{const snippet=q.code.trim();return '#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n'+snippet.split('\n').map(line=>'    '+line).join('\n')+'\n    return 0;\n}\n'};
-function hideRunner(){const p=$('#labRunner');if(p)p.classList.add('hidden');const o=$('#labRunOutput');if(o)o.textContent='';}
-function showRunner(){const p=$('#labRunner');if(!p)return;p.classList.remove('hidden');const eligible=isRunnable(question);$('#labRunLanguage').textContent=eligible?'C (gcc)':'Exemplo conceitual';$('#labEditor').value=eligible?codeFor(question):question.code;$('#labEditor').readOnly=!eligible;$('#labRunBtn').disabled=!eligible;$('#labEditor').setAttribute('aria-label',eligible?'Editor de código C':'Exemplo não executável');$('#labRunOutput').textContent=eligible?'Edite o código e clique em Executar. A saída aparecerá aqui.':'Este trecho não é um programa C completo. Consulte a explicação e avance para outra questão.';}
 
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch{}};
 function updateSkins(){
@@ -53,7 +45,7 @@ function updateSkins(){
 
 function chooseNext(){
  pruneExpired();
- answered=false;question=null;hideRunner();
+ answered=false;question=null;
  $('#labCheck').disabled=false;$('#labCheck').classList.remove('hidden');$('#labNext').classList.add('hidden');$('#labFeedback').innerHTML='';
  const available=bank[currentModule]||[];
  if(!available.length){labError('Banco de perguntas indisponível. Atualize a página ou confira o deploy de lab-bank.js.');return;}
@@ -68,7 +60,7 @@ function chooseNext(){
   return;
  }
  $('#labTopic').textContent=question.topic;$('#labTitle').textContent=question.q;
- $('#labIntro').textContent='Leia o exemplo, escolha uma alternativa e confira a explicação. Cada pergunta só volta a aparecer após 1 hora.';
+ $('#labIntro').textContent='Leia o enunciado e use o exemplo abaixo para chegar à resposta. Após confirmar, confira o raciocínio.';
  $('#labCode').textContent=question.code;
  $('#labOptions').innerHTML=question.options.map((o,i)=>`<label class="v3-lab-option"><input type="radio" name="labOption" value="${i}"><span>${esc(o)}</span></label>`).join('');
 }
@@ -89,11 +81,9 @@ $('#labCheck').onclick=()=>{
  const good=Number(selected.value)===question.answer;
  $('#labFeedback').innerHTML=`<div class="v3-feedback ${good?'good':'bad'}"><strong>${good?'Resposta correta!':'Resposta incorreta'}</strong><p>Correta: ${esc(question.options[question.answer])}</p><p>${esc(question.why)}</p></div>`;
  $('#labOptions').querySelectorAll('input').forEach(x=>x.disabled=true);
- $('#labCheck').classList.add('hidden');$('#labNext').classList.remove('hidden');showRunner();updateSkins();
+ $('#labCheck').classList.add('hidden');$('#labNext').classList.remove('hidden');updateSkins();
 };
 $('#labNext').onclick=chooseNext;
-$('#labRunBtn').onclick=async()=>{if(!answered||!question||!isRunnable(question))return;const code=$('#labEditor').value;const output=$('#labRunOutput');if(code.length>12000){output.textContent='Limite: 12.000 caracteres.';return}if(!executorBase){output.textContent='Execução remota ainda não ativada. Configure executor-config.json com a URL do Worker publicado.';return}$('#labRunBtn').disabled=true;output.textContent='Compilando e executando…';const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);try{const r=await fetch(executorBase+'/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'c',code}),signal:controller.signal});const d=await r.json();if(!r.ok)throw Error(d.error||'Falha HTTP '+r.status);output.textContent=[d.compileOutput&&'Compilador:\n'+d.compileOutput,d.runOutput&&'Saída:\n'+d.runOutput,d.exitCode!==null&&d.exitCode!==undefined?'Código de saída: '+d.exitCode:null].filter(Boolean).join('\n\n')||'(O programa terminou sem imprimir dados.)'}catch(e){output.textContent=e.name==='AbortError'?'Tempo limite da requisição excedido.':'Não foi possível executar: '+e.message}finally{clearTimeout(timeout);$('#labRunBtn').disabled=false}};
-$('#labResetCode').onclick=()=>{if(answered&&question)$('#labEditor').value=isRunnable(question)?codeFor(question):question.code};
 if(!modules.length){labError('Nenhum módulo foi carregado. Verifique o arquivo lab-bank.js.');return;}
 $('#labModule').innerHTML=modules.map(m=>`<option value="${esc(m.id)}">${esc(m.name)} · 112 exercícios</option>`).join('');
 $('#labModule').onchange=e=>{currentModule=e.target.value;chooseNext()};
