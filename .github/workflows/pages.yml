@@ -56,10 +56,11 @@ jobs:
           cp -- "${required[@]}" dist/
           shopt -s nullglob
           pdfs=(material/*.pdf)
-          if (( ${#pdfs[@]} != 14 )); then
-            echo "::error::Esperados 14 PDFs em material/, encontrados ${#pdfs[@]}."
+          if (( ${#pdfs[@]} < 14 )); then
+            echo "::error::Esperados pelo menos 14 PDFs em material/, encontrados ${#pdfs[@]}."
             exit 1
           fi
+          echo "Publicando ${#pdfs[@]} PDFs em material/."
           cp -- "${pdfs[@]}" dist/material/
           test -s dist/index.html
           echo "Arquivos públicos preparados com sucesso."
