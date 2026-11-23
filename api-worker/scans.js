@@ -1,8 +1,9 @@
 // Bluebird ScanBridge: coleta persistente no D1 e consulta autenticada.
 // GET /api/scans: token de leitura no header Authorization: Bearer ...
 // POST /api/scans: X-Scan-Token ou ?key=... (compatível com app Kotlin sem header customizado).
-const MAX_BODY_BYTES = 131072;
-const MAX_BATCH = 200;
+const MAX_BODY_BYTES = 4194304;
+const MAX_BATCH = 1000;
+const D1_CHUNK = 100;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const VALID_TYPES = new Set(['BARCODE', 'QR_CODE', 'UNKNOWN']);
 const VALID_SOURCES = new Set(['BLUEBIRD_INTENT', 'KEYBOARD', 'CAMERA']);
@@ -16,7 +17,7 @@ function tokenEquals(given, expected) {
 }
 async function readBody(req) {
   const reported = Number(req.headers.get('Content-Length') || 0);
-  if (reported > MAX_BODY_BYTES) return {error:'Payload excede 128 KiB', status:413};
+  if (reported > MAX_BODY_BYTES) return {error:'Payload excede 4 MiB', status:413};
   const raw = await req.text();
   if (new TextEncoder().encode(raw).length > MAX_BODY_BYTES) return {error:'Payload excede 128 KiB', status:413};
   try { return {value:JSON.parse(raw)}; } catch { return {error:'JSON inválido', status:400}; }
@@ -44,14 +45,19 @@ export async function scanRoute(req, env, path, reply) {
     const parsed = await readBody(req);
     if (parsed.error) return fail(parsed.error, parsed.status);
     const b = parsed.value;
-    if (!validPayload(b)) return fail('Payload inválido: confira device, sent_at, count e items (máximo 200)', 400);
+    if (!validPayload(b)) return fail('Payload inválido: confira device, sent_at, count e items (máximo 1000)', 400);
     const received = new Date().toISOString();
     try {
       const commands = b.items.map(item => env.DB.prepare(
         'INSERT OR IGNORE INTO scan_records (id,device,value,type,source,scanned_at,sent_at,received_at) VALUES (?,?,?,?,?,?,?,?)'
       ).bind(item.id, b.device, item.value, item.type, item.source, item.timestamp, b.sent_at, received));
-      const results = await env.DB.batch(commands);
-      const inserted = results.reduce((total, result) => total + (result.meta?.changes || 0), 0);
+      let inserted = 0;
+      // Blocos menores evitam limites operacionais do D1.
+      // O UUID é idempotente: se um bloco falhar, o Android reenvia o lote completo sem duplicar linhas.
+      for (let i = 0; i < commands.length; i += D1_CHUNK) {
+        const results = await env.DB.batch(commands.slice(i, i + D1_CHUNK));
+        inserted += results.reduce((total, result) => total + (result.meta?.changes || 0), 0);
+      }
       return reply({success:true, received:b.items.length, inserted, duplicates:b.items.length-inserted}, 201);
     } catch {
       return fail('Falha ao persistir lote no banco', 500);
