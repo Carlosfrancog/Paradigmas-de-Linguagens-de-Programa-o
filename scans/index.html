@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1221">
+  <title>Scans · Bluebird ScanBridge</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#0b1221;color:#f4f7ff}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top left,#163455 0,#0b1221 48%);line-height:1.45}
+    .wrap{max-width:1190px;margin:auto;padding:28px 20px 70px}a{color:#a3d6ff;text-decoration:none}a:hover{text-decoration:underline}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:38px}
+    .brand{font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#87e0cb}
+    h1{font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.045em;line-height:1.08;margin:10px 0}
+    p{color:#a4b2c8}.intro{margin-bottom:28px;max-width:740px}.pill{display:inline-flex;border:1px solid #30586d;color:#91e3cc;background:#102b3b;border-radius:40px;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.05em}
+    .card{background:rgba(19,29,48,.92);border:1px solid #2d3b53;border-radius:16px;padding:22px;margin:18px 0;box-shadow:0 12px 42px rgba(0,0,0,.12)}
+    .card h2{font-size:18px;margin:0 0 16px;letter-spacing:-.02em}.form-grid{display:grid;grid-template-columns:2.3fr 1.4fr auto;gap:12px;align-items:end}
+    label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;color:#bdcbe0;margin-bottom:7px}
+    input,select{font:inherit;color:#f1f6ff;background:#0c1728;border:1px solid #46536a;border-radius:10px;padding:12px 13px;width:100%;min-height:45px;outline-offset:3px}
+    input:focus,select:focus{border-color:#4fbbff;outline:1px solid #4fbbff}
+    button{font:inherit;font-size:14px;font-weight:700;border-radius:10px;border:1px solid #4f6f89;background:#20334d;color:#eff8ff;padding:12px 17px;cursor:pointer;min-height:45px}
+    button:hover{background:#294764}button:focus-visible{outline:2px solid #7de9ff;outline-offset:2px}button:disabled{opacity:.5;cursor:not-allowed}
+    button.primary{background:#41d4b2;border-color:#41d4b2;color:#062a28}button.primary:hover{background:#72e4c9}
+    .hint{font-size:12px;margin:10px 0 0}.notice{min-height:20px;font-size:13px;white-space:pre-wrap}.notice.error{color:#ffb0b6}.notice.ok{color:#77e6c0}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:19px 0}
+    .metric{padding:20px;background:#14223a;border:1px solid #30425b;border-radius:14px}.metric span{color:#a7b7ce;font-size:12px}.metric strong{display:block;font-size:32px;margin-top:4px;font-variant-numeric:tabular-nums}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px}
+    .toolbar>div{flex:1 1 160px}.toolbar .search{flex:3 1 230px}.toolbar button{flex:0 0 auto}
+    .table-scroll{overflow-x:auto;border:1px solid #30415b;border-radius:12px}
+    table{width:100%;border-collapse:collapse;min-width:825px;text-align:left}th{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#9aafc6;background:#0d1b2e}
+    td,th{padding:13px 12px;border-bottom:1px solid #2a3850}td{font-size:13px;color:#e1e9f6}tr:last-child td{border-bottom:none}
+    td.code{font-family:ui-monospace,Consolas,monospace;overflow-wrap:anywhere;max-width:280px;color:#e7fff7}
+    .chip{display:inline-block;background:#244660;color:#a9dfff;font-weight:700;border-radius:7px;padding:4px 7px;font-size:11px}.chip.qr{background:#244d3e;color:#a8f5cf}
+    .empty{text-align:center;color:#9aafc5;padding:40px 12px}.pager{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;flex-wrap:wrap;color:#9aafc5;font-size:13px}
+    .pager>div{display:flex;gap:8px}.foot{color:#8da0ba;font-size:12px;margin-top:35px}
+    @media(max-width:760px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.wrap{padding:18px 13px 45px}.card{padding:16px}.toolbar button{flex:1 1 100px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand">▣ Bluebird ScanBridge</div><a href="../">← Voltar aos estudos</a></header>
+  <section class="intro">
+    <span class="pill">PAINEL DE LEITURAS</span>
+    <h1>Scans recebidos.</h1>
+    <p>Histórico centralizado de códigos 1D e QR Code do EF401. Os registros ficam no banco D1, não neste navegador.</p>
+  </section>
+  <section class="card" aria-labelledby="connectionTitle">
+    <h2 id="connectionTitle">Conexão com a API</h2>
+    <form id="connectionForm" class="form-grid">
+      <div><label for="apiUrl">URL do Worker ou endpoint /api/scans</label><input id="apiUrl" placeholder="https://seu-worker.workers.dev" type="url" required autocomplete="url"></div>
+      <div><label for="readToken">Token de consulta (SCAN_READ_TOKEN)</label><input id="readToken" type="password" required placeholder="Cole o token de leitura" autocomplete="off"></div>
+      <button class="primary" type="submit" id="connectBtn">Conectar</button>
+    </form>
+    <p class="hint">A URL é salva somente neste navegador. O token fica apenas na sessão da aba, nunca no GitHub. Não use aqui o token de envio do aplicativo Android.</p>
+    <p class="notice" id="notice" role="status" aria-live="polite">Informe a URL e o token para carregar as leituras.</p>
+  </section>
+  <section class="metrics" aria-label="Resumo">
+    <div class="metric"><span>Total no banco (com filtro)</span><strong id="total">—</strong></div>
+    <div class="metric"><span>Itens nesta página</span><strong id="onPage">—</strong></div>
+    <div class="metric"><span>Última consulta</span><strong id="syncAt" style="font-size:21px">—</strong></div>
+  </section>
+  <section class="card" aria-labelledby="dataTitle">
+    <h2 id="dataTitle">Histórico de leituras</h2>
+    <form class="toolbar" id="filterForm">
+      <div class="search"><label for="search">Buscar valor</label><input id="search" placeholder="GTIN, QR, ID de produto..."></div>
+      <div><label for="type">Simbologia</label><select id="type"><option value="">Todos</option><option value="BARCODE">Código de barras</option><option value="QR_CODE">QR Code</option><option value="UNKNOWN">Não identificada</option></select></div>
+      <button type="submit">Filtrar</button><button type="button" id="refreshBtn">Atualizar</button><button type="button" id="csvBtn">Exportar CSV</button>
+    </form>
+    <div class="table-scroll"><table><thead><tr><th>Lido em</th><th>Tipo</th><th>Valor</th><th>Origem</th><th>Dispositivo</th><th>Recebido em</th></tr></thead><tbody id="rows"><tr><td colspan="6" class="empty">Conecte à API para consultar leituras.</td></tr></tbody></table></div>
+    <div class="pager"><span id="range">Nenhuma leitura carregada</span><div><button id="prev" type="button" disabled>← Anterior</button><button id="next" type="button" disabled>Próxima →</button></div></div>
+  </section>
+  <p class="foot">Endpoint de coleta: <code>POST /api/scans?key=SEU_TOKEN_DE_ENVIO</code> · Consulta: <code>GET /api/scans</code> (Bearer). Não compartilhe tokens em páginas públicas.</p>
+</div>
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const PAGE_SIZE = 100;
+  let offset = 0, total = 0, records = [], busy = false;
+  $('apiUrl').value = localStorage.getItem('scanbridge.apiUrl') || '';
+  $('readToken').value = sessionStorage.getItem('scanbridge.readToken') || '';
+  function message(s,ok){$('notice').textContent=s;$('notice').className='notice '+(ok?'ok':'error');}
+  function endpoint(){
+    const u = new URL($('apiUrl').value.trim());
+    if(u.protocol!=='https:' && !(u.protocol==='http:' && ['localhost','127.0.0.1'].includes(u.hostname))) throw Error('Use uma URL HTTPS (ou HTTP local).');
+    u.hash='';u.search='';
+    const p=u.pathname.replace(/\/+$/,'');
+    if(!p || p==='/') u.pathname='/api/scans';
+    else if(p==='/api/scans') u.pathname=p;
+    else throw Error('Informe a raiz do Worker ou o caminho /api/scans.');
+    return u;
+  }
+  const format = iso => {const d=new Date(iso);return isNaN(d.getTime())?'—':d.toLocaleString('pt-BR');};
+  const td = (tr,value,cls) => {const el=document.createElement('td');el.textContent=String(value??'—');if(cls)el.className=cls;tr.appendChild(el);return el;};
+  function render(){
+    $('total').textContent=total.toLocaleString('pt-BR');$('onPage').textContent=String(records.length);
+    const tbody=$('rows');tbody.replaceChildren();
+    if(!records.length){const tr=document.createElement('tr');const cell=td(tr,'Nenhuma leitura encontrada.','empty');cell.colSpan=6;tbody.appendChild(tr);}
+    else for(const rec of records){
+      const tr=document.createElement('tr');td(tr,format(rec.scanned_at));
+      const typeCell=document.createElement('td'),span=document.createElement('span');span.className='chip'+(rec.type==='QR_CODE'?' qr':'');span.textContent=rec.type;typeCell.appendChild(span);tr.appendChild(typeCell);
+      td(tr,rec.value,'code');td(tr,rec.source);td(tr,rec.device);td(tr,format(rec.received_at));tbody.appendChild(tr);
+    }
+    $('range').textContent=total?('Exibindo '+(offset+1)+'–'+(offset+records.length)+' de '+total):'0 registros';
+    $('prev').disabled=busy||offset<=0;$('next').disabled=busy||offset+records.length>=total;
+  }
+  async function load(){
+    if(busy)return;
+    let u;
+    try{u=endpoint();}catch(e){message(e.message,false);return;}
+    const token=$('readToken').value.trim();
+    if(!token){message('Informe o token de consulta.',false);return;}
+    busy=true;$('connectBtn').disabled=true;$('refreshBtn').disabled=true;
+    try{
+      u.searchParams.set('limit',String(PAGE_SIZE));u.searchParams.set('offset',String(offset));
+      if($('type').value)u.searchParams.set('type',$('type').value);
+      if($('search').value.trim())u.searchParams.set('q',$('search').value.trim());
+      const response=await fetch(u.toString(),{headers:{'Accept':'application/json','Authorization':'Bearer '+token},cache:'no-store'});
+      let data;try{data=await response.json()}catch{throw Error('A API não retornou JSON. HTTP '+response.status);}
+      if(!response.ok||!data.success)throw Error(data.error||'Falha HTTP '+response.status);
+      records=Array.isArray(data.items)?data.items:[];total=Number(data.total)||0;
+      localStorage.setItem('scanbridge.apiUrl',$('apiUrl').value.trim());sessionStorage.setItem('scanbridge.readToken',token);
+      $('syncAt').textContent=new Date().toLocaleTimeString('pt-BR');
+      message('Conectado · dados consultados com sucesso.',true);
+    }catch(e){message('Não foi possível consultar a API: '+e.message,false);records=[];total=0;}
+    finally{busy=false;$('connectBtn').disabled=false;$('refreshBtn').disabled=false;render();}
+  }
+  $('connectionForm').addEventListener('submit',e=>{e.preventDefault();offset=0;load();});
+  $('filterForm').addEventListener('submit',e=>{e.preventDefault();offset=0;load();});
+  $('refreshBtn').addEventListener('click',load);
+  $('prev').addEventListener('click',()=>{if(offset>=PAGE_SIZE){offset-=PAGE_SIZE;load();}});
+  $('next').addEventListener('click',()=>{if(offset+records.length<total){offset+=PAGE_SIZE;load();}});
+  $('csvBtn').addEventListener('click',()=>{
+    if(!records.length){message('Nenhum item carregado para exportar.',false);return;}
+    const fields=['id','device','value','type','source','scanned_at','sent_at','received_at'];
+    const quote=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
+    const data=[fields.map(quote).join(';'),...records.map(row=>fields.map(k=>quote(row[k])).join(';'))].join('\r\n');
+    const blob=new Blob(['\uFEFF',data],{type:'text/csv;charset=utf-8'});const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download='scans-'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+    message('CSV da página atual exportado ('+records.length+' registros).',true);
+  });
+  render();
+  if($('apiUrl').value && $('readToken').value)load();
+})();
+</script>
+</body>
+</html>

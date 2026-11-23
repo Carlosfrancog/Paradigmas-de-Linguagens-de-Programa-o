@@ -40,3 +40,61 @@ Após configurar D1 e fazer backup, execute `npx wrangler d1 execute plp-estudos
 Rotas: `POST /api/wallet/register`, `POST /api/wallet/login`, `GET /api/wallet/me`, `GET /api/wallet/ranking`, `POST /api/wallet/challenge`, `POST /api/wallet/answer`. Token Bearer é retornado após criar conta/login. Nunca inclua tokens ou senhas em `config.json`. A resposta é aceita uma única vez e o servidor credita 5 moedas por acerto. Ranking público contém somente nome e coins.
 
 Considere adicionar Turnstile/rate limits e políticas de privacidade/remover conta antes de divulgar amplamente. Os saldos da wallet não são uma moeda de valor real e não têm propósito financeiro.
+
+
+## Bluebird ScanBridge — /api/scans
+
+O Worker existente também atende o app Android BluebirdScanBridge (Android 7.1.2). A rota aceita o payload exato de `ApiSender.kt` e grava no D1 com chave primária UUID para evitar duplicações em reenvios.
+
+**Atenção:** o GitHub Pages publica só o painel; não é servidor HTTP para POST. O endpoint real será `https://SEU-WORKER.workers.dev/api/scans`.
+
+### Instalação no D1
+
+Para banco já existente, aplique **apenas** a migração aditiva:
+
+```bash
+cd api-worker
+npx wrangler d1 execute plp-estudos --remote --file=scans-migration.sql
+npx wrangler secret put SCAN_INGEST_TOKEN
+npx wrangler secret put SCAN_READ_TOKEN
+npx wrangler deploy
+```
+
+No primeiro setup, crie o D1 e configure o ID no `wrangler.toml` conforme o guia anterior; o `schema.sql` já contém a tabela de scans. Configure tokens distintos, longos e aleatórios. **Não versionar os tokens**.
+
+### GitHub Actions (opcional)
+
+O workflow `.github/workflows/deploy-scan-api.yml` executa migração e deploy em pushes no Worker e manualmente, quando os seguintes **Repository secrets** existirem: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `SCAN_INGEST_TOKEN` e `SCAN_READ_TOKEN`. Caso contrário, ele avisa e ignora o deploy. O ID D1 placeholder é substituído apenas no runner, sem alteração do repositório.
+
+### Contrato de ingestão do app Kotlin
+
+```http
+POST https://SEU-WORKER.workers.dev/api/scans?key=TOKEN_DE_ENVIO
+Content-Type: application/json; charset=utf-8
+Accept: application/json
+```
+
+```json
+{
+  "device": "EF401",
+  "sent_at": "2026-11-23T19:00:00.000Z",
+  "count": 1,
+  "items": [{
+    "id": "c0fb81be-3d43-4eb2-9cd8-b3a24ab7f50e",
+    "value": "7891234567895",
+    "type": "BARCODE",
+    "source": "BLUEBIRD_INTENT",
+    "timestamp": "2026-11-23T18:59:58.000Z"
+  }]
+}
+```
+
+Retorna HTTP `201`: `{"success":true,"received":1,"inserted":1,"duplicates":0}`. Reenvios com mesmo ID são idempotentes. Em validação inválida ou falha do banco retorna erro não-2xx, mantendo a fila no Android.
+
+**O app atual não manda cabeçalho de autenticação próprio**, por isso a URL aceita `?key=` com token de ingestão. A URL/tokens são sensíveis, não os inclua em logs, capturas ou links públicos. Alternativamente, o backend aceita cabeçalho `X-Scan-Token` para futura atualização do app.
+
+### Painel GitHub Pages
+
+`/scans/` é publicado pela Action de Pages. Ele faz `GET /api/scans?limit=100&offset=0&type=BARCODE&q=...` autenticado por `Authorization: Bearer SCAN_READ_TOKEN`. O token de consulta é salvo só em `sessionStorage`; a URL do Worker em `localStorage`. O CSV exporta **somente a página atualmente carregada**. Os registros persistem no D1, não no browser.
+
+CORS permite `Authorization` exclusivamente das origens listadas em `ALLOWED_ORIGINS`. Essa proteção **não substitui** os tokens. Há limite de 1000 leituras por POST (gravadas em blocos D1 de 100), 4 MiB por corpo, 2048 caracteres por valor.
