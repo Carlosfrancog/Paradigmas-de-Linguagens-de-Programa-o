@@ -97,4 +97,4 @@ Retorna HTTP `201`: `{"success":true,"received":1,"inserted":1,"duplicates":0}`.
 
 `/scans/` é publicado pela Action de Pages. Ele faz `GET /api/scans?limit=100&offset=0&type=BARCODE&q=...` autenticado por `Authorization: Bearer SCAN_READ_TOKEN`. O token de consulta é salvo só em `sessionStorage`; a URL do Worker em `localStorage`. O CSV exporta **somente a página atualmente carregada**. Os registros persistem no D1, não no browser.
 
-CORS permite `Authorization` exclusivamente das origens listadas em `ALLOWED_ORIGINS`. Essa proteção **não substitui** os tokens. Há limite de 200 leituras por POST, 128 KiB por corpo, 2048 caracteres por valor.
+CORS permite `Authorization` exclusivamente das origens listadas em `ALLOWED_ORIGINS`. Essa proteção **não substitui** os tokens. Há limite de 1000 leituras por POST (gravadas em blocos D1 de 100), 4 MiB por corpo, 2048 caracteres por valor.
