@@ -1,0 +1,55 @@
+name: Deploy Scan API (Cloudflare Worker + D1)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api-worker/**'
+      - '.github/workflows/deploy-scan-api.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Detectar configuração Cloudflare
+        id: config
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
+          SCAN_INGEST_TOKEN: ${{ secrets.SCAN_INGEST_TOKEN }}
+          SCAN_READ_TOKEN: ${{ secrets.SCAN_READ_TOKEN }}
+        run: |
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" || -z "$D1_DATABASE_ID" || -z "$SCAN_INGEST_TOKEN" || -z "$SCAN_READ_TOKEN" ]]; then
+            echo "::notice::Deploy da API não executado: configure 5 Repository secrets de Cloudflare e ScanBridge."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Instalar Wrangler
+        if: steps.config.outputs.ready == 'true'
+        run: npm install --global wrangler@4
+      - name: Migrar D1, publicar Worker e configurar secrets
+        if: steps.config.outputs.ready == 'true'
+        working-directory: api-worker
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
+          SCAN_INGEST_TOKEN: ${{ secrets.SCAN_INGEST_TOKEN }}
+          SCAN_READ_TOKEN: ${{ secrets.SCAN_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ "$D1_DATABASE_ID" =~ ^[0-9a-fA-F-]{36}$ ]] || { echo "::error::D1_DATABASE_ID inválido"; exit 1; }
+          sed -i "s/SUBSTITUIR_PELO_ID_DO_D1/$D1_DATABASE_ID/" wrangler.toml
+          wrangler d1 execute plp-estudos --remote --file=scans-migration.sql
+          wrangler deploy
+          printf '%s' "$SCAN_INGEST_TOKEN" | wrangler secret put SCAN_INGEST_TOKEN
+          printf '%s' "$SCAN_READ_TOKEN" | wrangler secret put SCAN_READ_TOKEN

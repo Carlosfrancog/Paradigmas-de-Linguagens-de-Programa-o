@@ -1,6 +1,7 @@
 import {walletRoute} from './wallet.js';
+import {scanRoute} from './scans.js';
 /** Cloudflare Worker + D1; public, no secret in client. Scores and public feedback only. */
-const headers=(origin,allowed)=>({'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+const headers=(origin,allowed)=>({'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type, Authorization, X-Scan-Token','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
 const json=(value,status,origin,allowed)=>new Response(JSON.stringify(value),{status,headers:headers(origin,allowed)});
 const limited=(s,max)=>String(s??'').trim().slice(0,max).replace(/[\u0000-\u001f\u007f]/g,'');
 export default {async fetch(req,env){
@@ -10,6 +11,8 @@ export default {async fetch(req,env){
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers:headers(origin,cors)});
  if(origin&&!allowedOrigins.includes(origin))return json({error:'Origem não permitida'},403,origin,cors);
  const path=new URL(req.url).pathname;
+ const scanResponse=await scanRoute(req,env,path,(value,status)=>json(value,status,origin,cors));
+ if(scanResponse)return scanResponse;
  const handled=await walletRoute(req,env,path,(value,status)=>json(value,status,origin,cors));
  if(handled)return handled;
  if(path==='/api/health'&&req.method==='GET')return json({ok:true},200,origin,cors);
